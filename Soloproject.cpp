@@ -30,31 +30,31 @@ int main()
     sf::Color BoxColor(255, 220, 195);
     sf::Color TextColor(64, 140, 124);
 
-    Button btn1("Static array", { 300, 100 }, 30, BoxColor, TextColor, OutColor);
+    Button btn1("Static array", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
     btn1.setPos({ 300, 125 });
     btn1.setFont(arial);
 
-    Button btn2("Dynamic array", { 300, 100 }, 30, BoxColor, TextColor, OutColor);
+    Button btn2("Dynamic array", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
     btn2.setPos({ 700, 125 });
     btn2.setFont(arial);
 
-    Button btn3("Singly linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor);
+    Button btn3("Singly linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
     btn3.setPos({ 100, 350 });
     btn3.setFont(arial);
 
-    Button btn4("Doubly linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor);
+    Button btn4("Doubly linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
     btn4.setPos({ 500, 350 });
     btn4.setFont(arial);
 
-    Button btn5("Circular linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor);
+    Button btn5("Circular linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
     btn5.setPos({ 900, 350 });
     btn5.setFont(arial);
 
-    Button btn6("Stack", { 300, 100 }, 30, BoxColor, TextColor, OutColor);
+    Button btn6("Stack", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
     btn6.setPos({ 300, 575 });
     btn6.setFont(arial);
 
-    Button btn7("Queue", { 300, 100 }, 30, BoxColor, TextColor, OutColor);
+    Button btn7("Queue", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
     btn7.setPos({ 700, 575 });
     btn7.setFont(arial);
 

@@ -2,7 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include"Buttons.h"
 
-Button::Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor, sf::Color textColor, sf::Color OutColor)
+Button::Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor, sf::Color textColor, sf::Color OutColor, float Out)
 {
 	text.setString(t);
 	text.sf::Text::setFillColor(textColor);
@@ -11,7 +11,7 @@ Button::Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor
 
 	button.setSize(size);
 	button.setFillColor(bgColor);
-	button.setOutlineThickness(5);
+	button.setOutlineThickness(Out);
 	button.setOutlineColor(OutColor);
 }
 
@@ -56,8 +56,8 @@ void Button::drawto(sf::RenderWindow& window)
 
 bool Button::isMouseOver(sf::RenderWindow& window)
 {
-	float MouseX = sf::Mouse::getPosition(window).x;
-	float MouseY = sf::Mouse::getPosition(window).y;
+	float MouseX = (float)sf::Mouse::getPosition(window).x;
+	float MouseY = (float)sf::Mouse::getPosition(window).y;
 
 	float BtnPosX = button.getPosition().x;
 	float BtnPosY = button.getPosition().y;

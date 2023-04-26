@@ -53,27 +53,27 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
     sf::Color BoxColor(255, 220, 195);
     sf::Color TextColor(64, 140, 124);
 
-    Button btn1("Initialize", { 100, 100 }, 15, BoxColor, TextColor, OutColor);
+    Button btn1("Initialize", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
     btn1.setPos({ 50, 50 });
     btn1.setFont(arial);
 
-    Button btn2("Add", { 100, 100 }, 15, BoxColor, TextColor, OutColor);
+    Button btn2("Add", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
     btn2.setPos({ 50, 200 });
     btn2.setFont(arial);
 
-    Button btn3("Delete", { 100, 100 }, 15, BoxColor, TextColor, OutColor);
+    Button btn3("Delete", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
     btn3.setPos({ 50, 350 });
     btn3.setFont(arial);
 
-    Button btn4("Update", { 100, 100 }, 15, BoxColor, TextColor, OutColor);
+    Button btn4("Update", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
     btn4.setPos({ 50, 500 });
     btn4.setFont(arial);
 
-    Button btn5("Search", { 100, 100 }, 15, BoxColor, TextColor, OutColor);
+    Button btn5("Search", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
     btn5.setPos({ 50, 650 });
     btn5.setFont(arial);
 
-    Button btn6("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor);
+    Button btn6("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btn6.setPos({ 1200, 0 });
     btn6.setFont(arial);
 
