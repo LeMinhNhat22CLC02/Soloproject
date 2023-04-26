@@ -51,9 +51,7 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
     Warnings2.setCharacterSize(20);
     Warnings2.setString("It is empty!");
     Warnings2.sf::Text::setFillColor(TextColor);
-
-    ///Circular Example;
-    ///Set(Example, Initialize());
+    
 
     int Type = 0;
     int Done = 0;
