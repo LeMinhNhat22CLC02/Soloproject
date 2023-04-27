@@ -2,6 +2,8 @@
 #include<SFML/Graphics.hpp>
 #include"Buttons.h"
 
+Button::Button() {}
+
 Button::Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor, sf::Color textColor, sf::Color OutColor, float Out)
 {
 	text.setString(t);
@@ -13,18 +15,6 @@ Button::Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor
 	button.setFillColor(bgColor);
 	button.setOutlineThickness(Out);
 	button.setOutlineColor(OutColor);
-}
-
-Button::Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor, sf::Color textColor)
-{
-	text.setString(t);
-	text.sf::Text::setFillColor(textColor);
-	text.setCharacterSize(Charsize);
-
-	button.setSize(size);
-	button.setFillColor(bgColor);
-	button.setOutlineThickness(5);
-	button.setOutlineColor(sf::Color::Cyan);
 }
 
 void Button::setFont(sf::Font& font)
@@ -75,4 +65,9 @@ bool Button::isMouseOver(sf::RenderWindow& window)
 sf::Vector2f Button::getPosition()
 {
 	return button.getPosition();
+}
+
+void Button::setString(std::string t)
+{
+	text.setString(t);
 }

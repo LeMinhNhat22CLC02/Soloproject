@@ -12,14 +12,13 @@
 #include "Stack.h"
 #include "Queue.h"
 
-// Project sieu vip cua Ben
 int main()
 {
     sf::RenderWindow window;
 
     sf::Vector2i centerWidow((sf::VideoMode::getDesktopMode().width / 2) - 650, (sf::VideoMode::getDesktopMode().height / 2) - 400);
 
-    window.create(sf::VideoMode(1300, 800), "Data Structure Visualization", sf::Style::Titlebar | sf::Style::Close);
+    window.create(sf::VideoMode(1300, 750), "Data Structure Visualization", sf::Style::Titlebar | sf::Style::Close);
     window.setPosition(centerWidow);
     window.setKeyRepeatEnabled(true);
 
@@ -40,23 +39,23 @@ int main()
     btn2.setFont(arial);
 
     Button btn3("Singly linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
-    btn3.setPos({ 100, 350 });
+    btn3.setPos({ 100, 325 });
     btn3.setFont(arial);
 
     Button btn4("Doubly linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
-    btn4.setPos({ 500, 350 });
+    btn4.setPos({ 500, 325 });
     btn4.setFont(arial);
 
     Button btn5("Circular linked list", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
-    btn5.setPos({ 900, 350 });
+    btn5.setPos({ 900, 325 });
     btn5.setFont(arial);
 
     Button btn6("Stack", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
-    btn6.setPos({ 300, 575 });
+    btn6.setPos({ 300, 550 });
     btn6.setFont(arial);
 
     Button btn7("Queue", { 300, 100 }, 30, BoxColor, TextColor, OutColor, 5);
-    btn7.setPos({ 700, 575 });
+    btn7.setPos({ 700, 550 });
     btn7.setFont(arial);
 
     while (window.isOpen())

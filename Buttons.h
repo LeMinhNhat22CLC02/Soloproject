@@ -5,8 +5,8 @@
 
 class Button {
 public:
+	Button();
 	Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor, sf::Color textColor, sf::Color OutColor, float Out);
-	Button(std::string t, sf::Vector2f size, int Charsize, sf::Color bgColor, sf::Color textColor);
 	void setFont(sf::Font& font);
 	void setBackColor(sf::Color color);
 	void setTextColor(sf::Color& color);
@@ -14,6 +14,7 @@ public:
 	void drawto(sf::RenderWindow& window);
 	bool isMouseOver(sf::RenderWindow& window);
 	sf::Vector2f getPosition();
+	void setString(std::string t);
 private:
 	sf::RectangleShape button;
 	sf::Text text;
