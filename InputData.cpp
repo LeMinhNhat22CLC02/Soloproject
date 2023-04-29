@@ -521,3 +521,126 @@ int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nb
     Done = 0;
     return 0;
 }
+
+int GetSize(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int Datasize, int& Done)
+{
+    X--;
+
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color ScreenColor(238, 137, 128);
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Note1;
+    Note1.setFont(arial);
+    Note1.setCharacterSize(20);
+    Note1.setString("Input the new size then press enter key!");
+    Note1.sf::Text::setFillColor(TextColor);
+    Note1.setPosition({ 500, 50 });
+
+    sf::Text Warnings1;
+    Warnings1.setFont(arial);
+    Warnings1.setCharacterSize(20);
+    Warnings1.setString("The size is can be larger than 7. Please re-enter!");
+    Warnings1.sf::Text::setFillColor(TextColor);
+    Warnings1.setPosition({ 500, 50 });
+
+    sf::Text Warnings2;
+    Warnings2.setFont(arial);
+    Warnings2.setCharacterSize(20);
+    Warnings2.setString("The size must be a positive number. Please re - enter!");
+    Warnings2.sf::Text::setFillColor(TextColor);
+    Warnings2.setPosition({ 500, 50 });
+
+    Textbox Textbox1(15, TextColor, true);
+    Textbox1.setFont(arial);
+    Textbox1.setLimit(false);
+    Textbox1.setPosition(btn[X].getPosition());
+
+    sf::RectangleShape Box;
+    Box.setSize({ 160, 40 });
+    Box.setFillColor(BoxColor);
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+    Box.setPosition(btn[X].getPosition());
+
+    Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    btnHome.setPos({ 1200, 0 });
+    btnHome.setFont(arial);
+
+    int Type = 0;
+
+    while (window.isOpen())
+    {
+        while (window.pollEvent(Events))
+        {
+            switch (Events.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::MouseMoved:
+                if (btnHome.isMouseOver(window))
+                {
+                    btnHome.setBackColor(sf::Color::White);
+                }
+                else
+                {
+                    btnHome.setBackColor(sf::Color::Cyan);
+                    for (int i = 0; i < Nbtn; i++)
+                        if (btn[i].isMouseOver(window))
+                            btn[i].setBackColor(sf::Color::White);
+                        else btn[i].setBackColor(BoxColor);
+                }
+                break;
+
+            case sf::Event::MouseButtonPressed:
+                if (btnHome.isMouseOver(window))
+                {
+                    Done = -1;
+                    return 0;
+                }
+                else
+                {
+                    for (int i = 0; i < Nbtn; i++)
+                        if (btn[i].isMouseOver(window))
+                        {
+                            Done = i + 1;
+                            return 0;
+                        }
+                }
+                break;
+
+            case sf::Event::TextEntered:
+                if (Events.text.unicode == ENTER_KEY)
+                {
+                    Done = 0;
+                    Type = WhatType(Textbox1.getText(), Datasize);
+                    if (Type == 0) return std::stoi(Textbox1.getText());
+                    Textbox1.Clear();
+                }
+                Textbox1.typeOn(Events);
+                break;
+            }
+        }
+
+        window.clear(ScreenColor);
+
+        for (int i = 0; i < Nbtn; i++)
+            btn[i].drawto(window);
+        btnHome.drawto(window);
+        window.draw(Box);
+        Textbox1.drawto(window);
+        if (Type == 0) window.draw(Note1);
+        else if (Type == 1) window.draw(Warnings1);
+        else window.draw(Warnings2);
+
+        window.display();
+    }
+    Done = 0;
+    return 0;
+}

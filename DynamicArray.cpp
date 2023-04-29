@@ -42,7 +42,10 @@ bool Dynamic::isEmpty()
 void Dynamic::Set(std::vector<std::string> X)
 {
     for (int i = 0; i < (int)X.size(); i++)
-        data[i] = X[i];
+        data[i] = X[i], std::cout << X[i] << " "; std::cout << "\n";
+
+    for (int i = 0; i < (int)X.size(); i++)
+        std::cout << data[i] << " "; std::cout << "\n";
 }
 
 void Dynamic::Print()
@@ -52,6 +55,44 @@ void Dynamic::Print()
         std::cout << data[i] << " ";
     }
     std::cout << std::endl;
+}
+
+void Dynamic::AddFirst(std::string X)
+{
+    for (int i = size; i >= 1; i--)
+        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
+    size++;
+}
+
+void Dynamic::AddMiddle(std::string X)
+{
+    for (int i = size; i >= size/2; i--)
+        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
+    size++;
+}
+
+void Dynamic::AddLast(std::string X)
+{
+    data[size] = X;
+    size++;
+}
+
+void Dynamic::DeleteFirst()
+{
+    size--;
+    for (int i = 0; i < size; i++)
+        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
+}
+
+void Dynamic::DeleteMiddle()
+{
+    size--;
+    for (int i = size / 2; i < size; i++)
+        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
+}
+void Dynamic::DeleteLast()
+{
+    size--;
 }
 
 void Dynamic::resize(int newSize)
@@ -76,10 +117,14 @@ void Dynamic::Delete(int Location)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
     size--;
 }
-
 void Dynamic::Update(std::string X, int Location)
 {
     data[Location] = X;
+}
+
+std::string Dynamic::Access(int Location)
+{
+    return data[Location];
 }
 
 void Dynamic::Search(std::string X)
@@ -111,6 +156,36 @@ void Add(Dynamic& X, std::string Y, int Z)
     X.Add(Y, Z);
 }
 
+void AddFirst(Dynamic& X, std::string Y)
+{
+    X.AddFirst(Y);
+}
+
+void AddMiddle(Dynamic& X, std::string Y)
+{
+    X.AddMiddle(Y);
+}
+
+void AddLast(Dynamic& X, std::string Y)
+{
+    X.AddLast(Y);
+}
+
+void DeleteFirst(Dynamic& X)
+{
+    X.DeleteFirst();
+}
+
+void DeleteMiddle(Dynamic& X)
+{
+    X.DeleteMiddle();
+}
+
+void DeleteLast(Dynamic& X)
+{
+    X.DeleteLast();
+}
+
 void Update(Dynamic& X, std::string Y, int Z)
 {
     X.Update(Y, Z);
@@ -130,42 +205,45 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
     sf::Color BoxColor(255, 220, 195);
     sf::Color TextColor(64, 140, 124);
 
-    Button btn1("Initialize", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn1.setPos({ 50, 50 });
-    btn1.setFont(arial);
-
-    Button btn2("Add", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn2.setPos({ 50, 200 });
-    btn2.setFont(arial);
-
-    Button btn3("Delete", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn3.setPos({ 50, 350 });
-    btn3.setFont(arial);
-
-    Button btn4("Update", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn4.setPos({ 50, 500 });
-    btn4.setFont(arial);
-
-    Button btn5("Search", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn5.setPos({ 50, 650 });
-    btn5.setFont(arial);
-
-    Button btn6("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
-    btn6.setPos({ 1200, 0 });
-    btn6.setFont(arial);
+    Button btn[12];
+    for (int i = 0; i < 12; i++)
+    {
+        btn[i] = Button("", { 160, 40 }, 15, BoxColor, TextColor, OutColor, 3);
+        btn[i].setPos({ 10, (float)10 + i * 56 });
+        btn[i].setFont(arial);
+    }
+    btn[0].setString("Init from file");
+    btn[1].setString("Randomized data");
+    btn[2].setString("Insert to the first");
+    btn[3].setString("Insert to the last");
+    btn[4].setString("Insert to the middle");
+    btn[5].setString("Delete at the first");
+    btn[6].setString("Delete at the last");
+    btn[7].setString("Delete at the middle");
+    btn[8].setString("Update");
+    btn[9].setString("Alocate");
+    btn[10].setString("Access");
+    btn[11].setString("Search");
 
     sf::Text Warnings1;
     Warnings1.setFont(arial);
     Warnings1.setCharacterSize(20);
     Warnings1.setString("You can not have more than 7 elements!");
-    Warnings1.sf::Text::setFillColor(TextColor);
-    Warnings1.setPosition({ 50, 173 });
+    Warnings1.sf::Text::setFillColor(sf::Color::Cyan);
+    Warnings1.setPosition({ 500, 50 });
+    Warnings1.setStyle(sf::Text::Bold);
 
     sf::Text Warnings2;
     Warnings2.setFont(arial);
     Warnings2.setCharacterSize(20);
     Warnings2.setString("It is empty!");
-    Warnings2.sf::Text::setFillColor(TextColor);
+    Warnings2.sf::Text::setFillColor(sf::Color::Cyan);
+    Warnings2.setPosition({ 500, 50 });
+    Warnings2.setStyle(sf::Text::Bold);
+
+    Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    btnHome.setPos({ 1200, 0 });
+    btnHome.setFont(arial);
 
     Dynamic Example;
     Set(Example, Initialize());
@@ -188,80 +266,163 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     break;
 
                 case 2:
-                    if (Example.isFull())
-                    {
-                        Type = 1;
-                    }
-                    else
-                    {
-                        Type = 0;
-                        Done = 2;
-                        std::string X = GetData(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Done);
-                        std::cout << Done << "1" << std::endl;
-                        if (Done != 0) break;
-                        Done = 2;
-                        int Y = GetLocation(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Example.GetSize(), Done);
-                        std::cout << Done << "2" << std::endl;
-                        if (Done != 0) break;
-                        std::cout << Done << "3" << std::endl;
-                        Add(Example, X, Y);
-                    }
+                    Type = 0;
+                    Done = 0;
+                    Set(Example, Initialize());
                     break;
 
                 case 3:
-                    if (Example.isEmpty())
+                    if (Example.isFull())
                     {
-                        Warnings2.setPosition({ 50, 323 });
-                        Type = 2;
+                        Type = 1;
+                        Done = 0;
                     }
                     else
                     {
                         Type = 0;
                         Done = 3;
-                        int X = GetLocation(Events, window, btn1, btn2, btn4, btn5, btn6, btn3, Example.GetSize() - 1, Done);
+                        std::string X = GetData(Events, window, btn, 12, 3, Done);
                         if (Done != 0) break;
-                        Delete(Example, X);
+                        AddFirst(Example, X);
                     }
                     break;
 
                 case 4:
-                    if (Example.isEmpty())
+                    if (Example.isFull())
                     {
-                        Warnings2.setPosition({ 50, 473 });
-                        Type = 2;
+                        Type = 1;
+                        Done = 0;
                     }
                     else
                     {
                         Type = 0;
                         Done = 4;
-                        std::string X = GetData(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Done);
+                        std::string X = GetData(Events, window, btn, 12, 4, Done);
                         if (Done != 0) break;
-                        Done = 4;
-                        int Y = GetLocation(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Example.GetSize() - 1, Done);
-                        if (Done != 0) break;
-                        Update(Example, X, Y);
+                        AddLast(Example, X);
                     }
                     break;
 
                 case 5:
-                    if (Example.isEmpty())
+                    if (Example.isFull())
                     {
-                        Warnings2.setPosition({ 50, 623 });
-                        Type = 2;
+                        Type = 1;
+                        Done = 0;
                     }
                     else
                     {
                         Type = 0;
                         Done = 5;
-                        std::string X = GetData(Events, window, btn1, btn2, btn3, btn4, btn6, btn5, Done);
+                        std::string X = GetData(Events, window, btn, 12, 5, Done);
+                        if (Done != 0) break;
+                        AddMiddle(Example, X);
+                    }
+                    break;
+
+                case 6:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        DeleteFirst(Example);
+                        Done = 0;
+                    }
+                    break;
+
+                case 7:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        DeleteLast(Example);
+                        Done = 0;
+                    }
+                    break;
+
+                case 8:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        DeleteMiddle(Example);
+                        Done = 0;
+                    }
+                    break;
+
+                case 9:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        Done = 9;
+                        std::string X = GetData(Events, window, btn, 12, 9, Done);
+                        if (Done != 0) break;
+                        Done = 9;
+                        int Y = GetLocation(Events, window, btn, 12, 9, Example.GetSize() - 1, Done);
+                        if (Done != 0) break;
+                        Update(Example, X, Y);
+                    }
+                    break;
+
+                case 10: {
+                    Type = 0;
+                    Done = 10;
+                    int X = GetSize(Events, window, btn, 12, 10, Example.GetSize() - 1, Done);
+                    if (Done != 0) break;
+                    Example.resize(X);
+                }
+                      break;
+
+                case 11:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        Done = 10;
+                        int Y = GetLocation(Events, window, btn, 12, 11, Example.GetSize() - 1, Done);
+                        if (Done != 0) break;
+                        Example.Access(Y);
+                    }
+                    break;
+
+                case 12:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        Done = 5;
+                        std::string X = GetData(Events, window, btn, 12, 12, Done);
                         if (Done != 0) break;
                         Search(Example, X);
                     }
                     break;
-                case 6:
-                    Done = 0;
+
+                case -1:
                     return;
-                    break;
                 }
             }
             else
@@ -272,137 +433,213 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     window.close();
                     break;
 
-                case sf::Event::MouseMoved:
-                    if (btn1.isMouseOver(window))
+                case sf::Event::MouseButtonPressed:
+                    if (btnHome.isMouseOver(window))
                     {
-                        btn1.setBackColor(sf::Color::White);
-                    }
-                    else if (btn2.isMouseOver(window))
-                    {
-                        btn2.setBackColor(sf::Color::White);
-                    }
-                    else if (btn3.isMouseOver(window))
-                    {
-                        btn3.setBackColor(sf::Color::White);
-                    }
-                    else if (btn4.isMouseOver(window))
-                    {
-                        btn4.setBackColor(sf::Color::White);
-                    }
-                    else if (btn5.isMouseOver(window))
-                    {
-                        btn5.setBackColor(sf::Color::White);
-                    }
-                    else if (btn6.isMouseOver(window))
-                    {
-                        btn6.setBackColor(sf::Color::White);
+                        return;
                     }
                     else
                     {
-                        btn1.setBackColor(BoxColor);
-                        btn2.setBackColor(BoxColor);
-                        btn3.setBackColor(BoxColor);
-                        btn4.setBackColor(BoxColor);
-                        btn5.setBackColor(BoxColor);
-                        btn6.setBackColor(sf::Color::Cyan);
-                    }
-                    break;
+                        for (int i = 0; i < 11; i++)
+                            if (btn[i].isMouseOver(window))
+                            {
+                                Done = i + 1;
+                                break;
+                            }
+                        switch (Done)
+                        {
+                        case 1:
+                            Type = 0;
+                            Done = 0;
+                            Set(Example, Initialize());
+                            break;
 
-                case sf::Event::MouseButtonPressed:
-                    if (btn1.isMouseOver(window))
-                    {
-                        Type = 0;
-                        Set(Example, Initialize());
-                    }
-                    else if (btn2.isMouseOver(window))
-                    {
-                        if (Example.isFull())
-                        {
-                            Type = 1;
-                        }
-                        else
-                        {
+                        case 2:
                             Type = 0;
-                            Done = 2;
-                            std::string X = GetData(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Done);
-                            std::cout << Done << "5" << std::endl;
-                            if (Done != 0) break;
-                            Done = 2;
-                            int Y = GetLocation(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Example.GetSize(), Done);
-                            std::cout << Done << "6" << std::endl;
-                            if (Done != 0) break;
-                            Add(Example, X, Y);
+                            Done = 0;
+                            Set(Example, Initialize());
+                            break;
+
+                        case 3:
+                            if (Example.isFull())
+                            {
+                                Type = 1;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                Done = 3;
+                                std::string X = GetData(Events, window, btn, 11, 3, Done);
+                                if (Done != 0) break;
+                                AddFirst(Example, X);
+                            }
+                            break;
+
+                        case 4:
+                            if (Example.isFull())
+                            {
+                                Type = 1;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                Done = 4;
+                                std::string X = GetData(Events, window, btn, 11, 4, Done);
+                                if (Done != 0) break;
+                                AddLast(Example, X);
+                            }
+                            break;
+
+                        case 5:
+                            if (Example.isFull())
+                            {
+                                Type = 1;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                Done = 5;
+                                std::string X = GetData(Events, window, btn, 11, 5, Done);
+                                if (Done != 0) break;
+                                AddMiddle(Example, X);
+                            }
+                            break;
+
+                        case 6:
+                            if (Example.isEmpty())
+                            {
+                                Type = 2;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                DeleteFirst(Example);
+                                Done = 0;
+                            }
+                            break;
+
+                        case 7:
+                            if (Example.isEmpty())
+                            {
+                                Type = 2;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                DeleteLast(Example);
+                                Done = 0;
+                            }
+                            break;
+
+                        case 8:
+                            if (Example.isEmpty())
+                            {
+                                Type = 2;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                DeleteMiddle(Example);
+                                Done = 0;
+                            }
+                            break;
+
+                        case 9:
+                            if (Example.isEmpty())
+                            {
+                                Type = 2;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                Done = 9;
+                                std::string X = GetData(Events, window, btn, 12, 9, Done);
+                                if (Done != 0) break;
+                                Done = 9;
+                                int Y = GetLocation(Events, window, btn, 12, 9, Example.GetSize() - 1, Done);
+                                if (Done != 0) break;
+                                Update(Example, X, Y);
+                            }
+                            break;
+
+                        case 10: {
                             Type = 0;
-                        }
-                    }
-                    else if (btn3.isMouseOver(window))
-                    {
-                        if (Example.isEmpty())
-                        {
-                            Warnings2.setPosition({ 50, 283 });
-                            Type = 2;
-                        }
-                        else
-                        {
-                            Type = 0;
-                            Done = 3;
-                            int X = GetLocation(Events, window, btn1, btn2, btn4, btn5, btn6, btn3, Example.GetSize() - 1, Done);
+                            Done = 10;
+                            int X = GetSize(Events, window, btn, 12, 10, Example.GetSize() - 1, Done);
                             if (Done != 0) break;
-                            Delete(Example, X);
+                            Example.resize(X);
                         }
-                    }
-                    else if (btn4.isMouseOver(window))
-                    {
-                        if (Example.isEmpty())
-                        {
-                            Warnings2.setPosition({ 50, 413 });
-                            Type = 2;
+                            break;
+
+                        case 11:
+                            if (Example.isEmpty())
+                            {
+                                Type = 2;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                Done = 11;
+                                int Y = GetLocation(Events, window, btn, 12, 11, Example.GetSize() - 1, Done);
+                                if (Done != 0) break;
+                                Example.Access(Y);
+                            }
+                            break;
+
+                        case 12:
+                            if (Example.isEmpty())
+                            {
+                                Type = 2;
+                                Done = 0;
+                            }
+                            else
+                            {
+                                Type = 0;
+                                Done = 5;
+                                std::string X = GetData(Events, window, btn, 12, 12, Done);
+                                if (Done != 0) break;
+                                Search(Example, X);
+                            }
+                            break;
                         }
-                        else
-                        {
-                            Type = 0;
-                            Done = 4;
-                            std::string X = GetData(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Done);
-                            if (Done != 0) break;
-                            Done = 4;
-                            int Y = GetLocation(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Example.GetSize() - 1, Done);
-                            if (Done != 0) break;
-                            Update(Example, X, Y);
-                        }
-                    }
-                    else if (btn5.isMouseOver(window))
-                    {
-                        if (Example.isEmpty())
-                        {
-                            Warnings2.setPosition({ 50, 543 });
-                            Type = 2;
-                        }
-                        else
-                        {
-                            Type = 0;
-                            Done = 5;
-                            std::string X = GetData(Events, window, btn1, btn2, btn3, btn4, btn6, btn5, Done);
-                            if (Done != 0) break;
-                            Search(Example, X);
-                        }
-                    }
-                    else if (btn6.isMouseOver(window))
-                    {
-                        return;
                     }
                 }
             }
         }
+
+        if (btnHome.isMouseOver(window))
+        {
+            btnHome.setBackColor(sf::Color::White);
+        }
+        else
+        {
+            btnHome.setBackColor(sf::Color::Cyan);
+            for (int i = 0; i < 11; i++)
+                if (btn[i].isMouseOver(window))
+                    btn[i].setBackColor(sf::Color::White);
+                else btn[i].setBackColor(BoxColor);
+        }
+
         window.clear(ScreenColor);
+
+        btnHome.drawto(window);
+
         Example.Print();
-        btn1.drawto(window);
-        btn2.drawto(window);
-        btn3.drawto(window);
-        btn4.drawto(window);
-        btn5.drawto(window);
-        btn6.drawto(window);
+
+        for (int i = 0; i < 12; i++)
+            btn[i].drawto(window);
+
         if (Type == 1) window.draw(Warnings1);
         else if (Type == 2) window.draw(Warnings2);
+
         window.display();
     }
 }

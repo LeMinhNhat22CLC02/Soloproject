@@ -12,22 +12,6 @@ void Set(std::string X[], std::vector<std::string> Y, int& n)
     n = (int)Y.size();
 }
 
-void Add(std::string X[], std::string Y, int Z, int& n)
-{
-    for (int i = n; i >= Z; i--)
-        X[i] = X[i - 1];
-    X[Z] = Y;
-    n++;
-}
-
-void Delete(std::string X[], int Y, int& n)
-{
-    for (int i = Y; i < n; i++)
-        X[i] = X[i + 1];
-    X[n - 1] = "";
-    n--;
-}
-
 void AddFirst(std::string X[], std::string Y, int& n)
 {
     for (int i = n; i > 0; i--)
