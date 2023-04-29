@@ -58,9 +58,11 @@ int main()
     btn7.setPos({ 700, 550 });
     btn7.setFont(arial);
 
+
     while (window.isOpen())
     {
         sf::Event Events;
+
 
         while (window.pollEvent(Events))
         {

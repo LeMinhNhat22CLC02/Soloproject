@@ -315,8 +315,9 @@ std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], in
     Note1.setFont(arial);
     Note1.setCharacterSize(20);
     Note1.setString("Input your data then press enter key!");
-    Note1.sf::Text::setFillColor(TextColor);
+    Note1.sf::Text::setFillColor(sf::Color::Cyan);
     Note1.setPosition({ 500, 50 });
+    Note1.setStyle(sf::Text::Bold);
 
     Textbox Textbox1(15, TextColor, true);
     Textbox1.setFont(arial);
@@ -415,22 +416,24 @@ int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nb
     Note1.setFont(arial);
     Note1.setCharacterSize(20);
     Note1.setString("Input the location then press enter key!");
-    Note1.sf::Text::setFillColor(TextColor);
+    Note1.sf::Text::setFillColor(sf::Color::Cyan);
     Note1.setPosition({ 500, 50 });
 
     sf::Text Warnings1;
     Warnings1.setFont(arial);
     Warnings1.setCharacterSize(20);
     Warnings1.setString("Location exceed size. Please re-enter!");
-    Warnings1.sf::Text::setFillColor(TextColor);
+    Warnings1.sf::Text::setFillColor(sf::Color::Cyan);
     Warnings1.setPosition({ 500, 50 });
+    Warnings1.setStyle(sf::Text::Bold);
 
     sf::Text Warnings2;
     Warnings2.setFont(arial);
     Warnings2.setCharacterSize(20);
     Warnings2.setString("The location must be a positive number. Please re - enter!");
-    Warnings2.sf::Text::setFillColor(TextColor);
+    Warnings2.sf::Text::setFillColor(sf::Color::Cyan);
     Warnings2.setPosition({ 500, 50 });
+    Warnings2.setStyle(sf::Text::Bold);
 
     Textbox Textbox1(15, TextColor, true);
     Textbox1.setFont(arial);
@@ -538,22 +541,24 @@ int GetSize(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, 
     Note1.setFont(arial);
     Note1.setCharacterSize(20);
     Note1.setString("Input the new size then press enter key!");
-    Note1.sf::Text::setFillColor(TextColor);
+    Note1.sf::Text::setFillColor(sf::Color::Cyan);
     Note1.setPosition({ 500, 50 });
 
     sf::Text Warnings1;
     Warnings1.setFont(arial);
     Warnings1.setCharacterSize(20);
     Warnings1.setString("The size is can be larger than 7. Please re-enter!");
-    Warnings1.sf::Text::setFillColor(TextColor);
+    Warnings1.sf::Text::setFillColor(sf::Color::Cyan);
     Warnings1.setPosition({ 500, 50 });
+    Warnings1.setStyle(sf::Text::Bold);
 
     sf::Text Warnings2;
     Warnings2.setFont(arial);
     Warnings2.setCharacterSize(20);
     Warnings2.setString("The size must be a positive number. Please re - enter!");
-    Warnings2.sf::Text::setFillColor(TextColor);
+    Warnings2.sf::Text::setFillColor(sf::Color::Cyan);
     Warnings2.setPosition({ 500, 50 });
+    Warnings2.setStyle(sf::Text::Bold);
 
     Textbox Textbox1(15, TextColor, true);
     Textbox1.setFont(arial);

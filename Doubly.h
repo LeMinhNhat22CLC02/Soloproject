@@ -7,17 +7,17 @@ class Doubly {
 public:
     Doubly();
     ~Doubly();
-    void addFront(std::string val);
-    void addBack(std::string val);
-    void removeFront();
-    void removeBack();
     int GetSize();
     void Print();
     bool isFull();
     bool isEmpty();
+    void AddFirst(std::string val);
+    void AddLast(std::string val);
+    void AddMiddle(std::string X);
+    void DeleteFirst();
+    void DeleteLast();
+    void DeleteMiddle();
     void Set(std::vector<std::string> X);
-    void Add(std::string X, int Y);
-    void Delete(int X);
     void Update(std::string X, int Y);
     void Search(std::string X);
 private:
@@ -36,6 +36,12 @@ private:
 void Set(Doubly& X, std::vector<std::string> Y);
 void Add(Doubly& X, std::string Y, int Z);
 void Delete(Doubly& X, int Y);
+void AddFirst(Doubly& X, std::string Y);
+void AddLast(Doubly& X, std::string Y);
+void AddMiddle(Doubly& X, std::string Y);
+void DeleteFirst(Doubly& X);
+void DeleteLast(Doubly& X);
+void DeleteMiddle(Doubly& X);
 void Update(Doubly& X, std::string Y, int Z);
 void Search(Doubly& X, std::string Y);
 void DoublyClient(sf::Event Events, sf::RenderWindow& window);

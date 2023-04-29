@@ -8,7 +8,7 @@
 Dynamic::Dynamic()
 {
     size = 0;
-    capacity = 7;
+    capacity = 5;
     data.resize(5, "");
 }
 
@@ -31,6 +31,11 @@ int Dynamic::GetSize()
 
 bool Dynamic::isFull()
 {
+    return size == 7;
+}
+
+bool Dynamic::isMax()
+{
     return size == capacity;
 }
 
@@ -42,10 +47,8 @@ bool Dynamic::isEmpty()
 void Dynamic::Set(std::vector<std::string> X)
 {
     for (int i = 0; i < (int)X.size(); i++)
-        data[i] = X[i], std::cout << X[i] << " "; std::cout << "\n";
-
-    for (int i = 0; i < (int)X.size(); i++)
-        std::cout << data[i] << " "; std::cout << "\n";
+        data[i] = X[i];
+    size = X.size();
 }
 
 void Dynamic::Print()
@@ -61,13 +64,15 @@ void Dynamic::AddFirst(std::string X)
 {
     for (int i = size; i >= 1; i--)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
+    data[0] = X;
     size++;
 }
 
 void Dynamic::AddMiddle(std::string X)
 {
-    for (int i = size; i >= size/2; i--)
+    for (int i = size; i >= size / 2; i--)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
+    data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(size / 2) - 1] = X;
     size++;
 }
 
@@ -99,32 +104,20 @@ void Dynamic::resize(int newSize)
 {
     std::vector<std::string> Temp = data;
     data.resize(newSize, "");
-    for (int i = 0; i < Temp.size(); i++)
+    size = std::min(newSize, size);
+    capacity = newSize;
+    for (int i = 0; i < size; i++)
         data[i] = Temp[i];
 }
 
-void Dynamic::Add(std::string X, int Location)
-{
-    for (int i = size; i > Location; i--)
-        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
-    data[Location] = X;
-    size++;
-}
-
-void Dynamic::Delete(int Location)
-{
-    for (int i = Location; i < size; i++)
-        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
-    size--;
-}
 void Dynamic::Update(std::string X, int Location)
 {
     data[Location] = X;
 }
 
-std::string Dynamic::Access(int Location)
+int Dynamic::getCap()
 {
-    return data[Location];
+    return capacity;
 }
 
 void Dynamic::Search(std::string X)
@@ -143,17 +136,8 @@ void Dynamic::Search(std::string X)
 void Set(Dynamic& X, std::vector<std::string> Y)
 {
     X.Set(Y);
-}
-
-
-void Delete(Dynamic& X, int Y)
-{
-    X.Delete(Y);
-}
-
-void Add(Dynamic& X, std::string Y, int Z)
-{
-    X.Add(Y, Z);
+    X.Print();
+    std::cout << X.GetSize();
 }
 
 void AddFirst(Dynamic& X, std::string Y)
@@ -283,6 +267,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 12, 3, Done);
                         if (Done != 0) break;
+                        if (Example.isMax()) Example.resize(Example.GetSize() + 1);
                         AddFirst(Example, X);
                     }
                     break;
@@ -299,6 +284,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 4;
                         std::string X = GetData(Events, window, btn, 12, 4, Done);
                         if (Done != 0) break;
+                        if (Example.isMax()) Example.resize(Example.GetSize() + 1);
                         AddLast(Example, X);
                     }
                     break;
@@ -315,6 +301,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 12, 5, Done);
                         if (Done != 0) break;
+                        if (Example.isMax()) Example.resize(Example.GetSize() + 1);
                         AddMiddle(Example, X);
                     }
                     break;
@@ -383,11 +370,11 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                 case 10: {
                     Type = 0;
                     Done = 10;
-                    int X = GetSize(Events, window, btn, 12, 10, Example.GetSize() - 1, Done);
+                    int X = GetSize(Events, window, btn, 12, 10, 7, Done);
                     if (Done != 0) break;
                     Example.resize(X);
                 }
-                      break;
+                    break;
 
                 case 11:
                     if (Example.isEmpty())
@@ -401,7 +388,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 10;
                         int Y = GetLocation(Events, window, btn, 12, 11, Example.GetSize() - 1, Done);
                         if (Done != 0) break;
-                        Example.Access(Y);
+                        std::cout << Example[Y] << "\n";
                     }
                     break;
 
@@ -440,174 +427,10 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
-                        for (int i = 0; i < 11; i++)
-                            if (btn[i].isMouseOver(window))
-                            {
-                                Done = i + 1;
-                                break;
-                            }
-                        switch (Done)
+                        for (int i = 0; i < 12; i++)
+                        if (btn[i].isMouseOver(window))
                         {
-                        case 1:
-                            Type = 0;
-                            Done = 0;
-                            Set(Example, Initialize());
-                            break;
-
-                        case 2:
-                            Type = 0;
-                            Done = 0;
-                            Set(Example, Initialize());
-                            break;
-
-                        case 3:
-                            if (Example.isFull())
-                            {
-                                Type = 1;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                Done = 3;
-                                std::string X = GetData(Events, window, btn, 11, 3, Done);
-                                if (Done != 0) break;
-                                AddFirst(Example, X);
-                            }
-                            break;
-
-                        case 4:
-                            if (Example.isFull())
-                            {
-                                Type = 1;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                Done = 4;
-                                std::string X = GetData(Events, window, btn, 11, 4, Done);
-                                if (Done != 0) break;
-                                AddLast(Example, X);
-                            }
-                            break;
-
-                        case 5:
-                            if (Example.isFull())
-                            {
-                                Type = 1;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                Done = 5;
-                                std::string X = GetData(Events, window, btn, 11, 5, Done);
-                                if (Done != 0) break;
-                                AddMiddle(Example, X);
-                            }
-                            break;
-
-                        case 6:
-                            if (Example.isEmpty())
-                            {
-                                Type = 2;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                DeleteFirst(Example);
-                                Done = 0;
-                            }
-                            break;
-
-                        case 7:
-                            if (Example.isEmpty())
-                            {
-                                Type = 2;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                DeleteLast(Example);
-                                Done = 0;
-                            }
-                            break;
-
-                        case 8:
-                            if (Example.isEmpty())
-                            {
-                                Type = 2;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                DeleteMiddle(Example);
-                                Done = 0;
-                            }
-                            break;
-
-                        case 9:
-                            if (Example.isEmpty())
-                            {
-                                Type = 2;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                Done = 9;
-                                std::string X = GetData(Events, window, btn, 12, 9, Done);
-                                if (Done != 0) break;
-                                Done = 9;
-                                int Y = GetLocation(Events, window, btn, 12, 9, Example.GetSize() - 1, Done);
-                                if (Done != 0) break;
-                                Update(Example, X, Y);
-                            }
-                            break;
-
-                        case 10: {
-                            Type = 0;
-                            Done = 10;
-                            int X = GetSize(Events, window, btn, 12, 10, Example.GetSize() - 1, Done);
-                            if (Done != 0) break;
-                            Example.resize(X);
-                        }
-                            break;
-
-                        case 11:
-                            if (Example.isEmpty())
-                            {
-                                Type = 2;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                Done = 11;
-                                int Y = GetLocation(Events, window, btn, 12, 11, Example.GetSize() - 1, Done);
-                                if (Done != 0) break;
-                                Example.Access(Y);
-                            }
-                            break;
-
-                        case 12:
-                            if (Example.isEmpty())
-                            {
-                                Type = 2;
-                                Done = 0;
-                            }
-                            else
-                            {
-                                Type = 0;
-                                Done = 5;
-                                std::string X = GetData(Events, window, btn, 12, 12, Done);
-                                if (Done != 0) break;
-                                Search(Example, X);
-                            }
+                            Done = i + 1;
                             break;
                         }
                     }
@@ -622,7 +445,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
         else
         {
             btnHome.setBackColor(sf::Color::Cyan);
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 12; i++)
                 if (btn[i].isMouseOver(window))
                     btn[i].setBackColor(sf::Color::White);
                 else btn[i].setBackColor(BoxColor);

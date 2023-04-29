@@ -19,7 +19,7 @@ Doubly::~Doubly()
     }
 }
 
-void Doubly::addFront(std::string val)
+void Doubly::AddFirst(std::string val)
 {
     Node* newNode = new Node(val);
     if (head == nullptr)
@@ -35,7 +35,7 @@ void Doubly::addFront(std::string val)
     size++;
 }
 
-void Doubly::addBack(std::string val)
+void Doubly::AddLast(std::string val)
 {
     Node* newNode = new Node(val);
     if (tail == nullptr)
@@ -51,7 +51,35 @@ void Doubly::addBack(std::string val)
     size++;
 }
 
-void Doubly::removeFront()
+void Doubly::AddMiddle(std::string X)
+{
+    Node* Pre = head;
+    for (int i = 0; i < size/2 - 1; i++)
+        Pre = Pre->next;
+    Node* Aft = Pre->next;
+    Node* Now = new Node(X);
+    Now->next = Aft; Aft->prev = Now;
+    Now->prev = Pre; Pre->next = Now;
+    size++;
+}
+
+void Doubly::DeleteLast()
+{
+    Node* nodeToDelete = tail;
+    tail = tail->prev;
+    if (tail == nullptr)
+    {
+        head = nullptr;
+    }
+    else
+    {
+        tail->next = nullptr;
+    }
+    delete nodeToDelete;
+    size--;
+}
+
+void Doubly::DeleteFirst()
 {
     Node* nodeToDelete = head;
     head = head->next;
@@ -67,19 +95,15 @@ void Doubly::removeFront()
     size--;
 }
 
-void Doubly::removeBack()
+void Doubly::DeleteMiddle()
 {
-    Node* nodeToDelete = tail;
-    tail = tail->prev;
-    if (tail == nullptr)
-    {
-        head = nullptr;
-    }
-    else
-    {
-        tail->next = nullptr;
-    }
-    delete nodeToDelete;
+    Node* Pre = head;
+    for (int i = 0; i < size/2 - 1; i++)
+        Pre = Pre->next;
+    Node* Del = Pre->next, * Aft = Del->next;
+    Pre->next = Aft;
+    Aft->prev = Pre;
+    delete Del;
     size--;
 }
 
@@ -115,52 +139,9 @@ void Doubly::Set(std::vector<std::string> X)
     tail = nullptr;
     size = 0;
     for (int i = 0; i < X.size(); i++)
-        addBack(X[i]);
+        AddLast(X[i]);
 }
 
-void Doubly::Add(std::string X, int Y)
-{
-    if (Y == 0)
-    {
-        addFront(X);
-        return;
-    }
-    if (Y == size)
-    {
-        addBack(X);
-        return;
-    }
-    Node* Pre = head;
-    for (int i = 0; i < Y - 1; i++)
-        Pre = Pre->next;
-    Node* Aft = Pre->next;
-    Node* Now = new Node(X);
-    Now->next = Aft; Aft->prev = Now;
-    Now->prev = Pre; Pre->next = Now;
-    size++;
-}
-
-void Doubly::Delete(int X)
-{
-    if (X == 0)
-    {
-        removeFront();
-        return;
-    }
-    if (X == size - 1)
-    {
-        removeBack();
-        return;
-    }
-    Node* Pre = head;
-    for (int i = 0; i < X - 1; i++)
-        Pre = Pre->next;
-    Node* Del = Pre->next, * Aft = Del->next;
-    Pre->next = Aft;
-    Aft->prev = Pre;
-    delete Del;
-    size--;
-}
 
 void Doubly::Update(std::string X, int Y)
 {
@@ -192,14 +173,34 @@ void Set(Doubly &X, std::vector<std::string> Y)
     X.Set(Y);
 }
 
-void Add(Doubly &X, std::string Y, int Z)
+void AddFirst(Doubly& X, std::string Y)
 {
-    X.Add(Y, Z);
+    X.AddFirst(Y);
 }
 
-void Delete(Doubly &X, int Y)
+void AddLast(Doubly& X, std::string Y)
 {
-    X.Delete(Y);
+    X.AddLast(Y);
+}
+
+void AddMiddle(Doubly& X, std::string Y)
+{
+    X.AddMiddle(Y);
+}
+
+void DeleteFirst(Doubly& X)
+{
+    X.DeleteFirst();
+}
+
+void DeleteLast(Doubly& X)
+{
+    X.DeleteLast();
+}
+
+void DeleteMiddle(Doubly& X)
+{
+    X.DeleteMiddle();
 }
 
 void Update(Doubly &X, std::string Y, int Z)
@@ -222,42 +223,43 @@ void DoublyClient(sf::Event Events, sf::RenderWindow& window)
     sf::Color BoxColor(255, 220, 195);
     sf::Color TextColor(64, 140, 124);
 
-    Button btn1("Initialize", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn1.setPos({ 50, 50 });
-    btn1.setFont(arial);
-
-    Button btn2("Add", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn2.setPos({ 50, 200 });
-    btn2.setFont(arial);
-
-    Button btn3("Delete", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn3.setPos({ 50, 350 });
-    btn3.setFont(arial);
-
-    Button btn4("Update", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn4.setPos({ 50, 500 });
-    btn4.setFont(arial);
-
-    Button btn5("Search", { 100, 100 }, 15, BoxColor, TextColor, OutColor, 5);
-    btn5.setPos({ 50, 650 });
-    btn5.setFont(arial);
-
-    Button btn6("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
-    btn6.setPos({ 1200, 0 });
-    btn6.setFont(arial);
-
+    Button btn[10];
+    for (int i = 0; i < 10; i++)
+    {
+        btn[i] = Button("", { 160, 40 }, 15, BoxColor, TextColor, OutColor, 3);
+        btn[i].setPos({ 10, (float)10 + i * 56 });
+        btn[i].setFont(arial);
+    }
+    btn[0].setString("Init from file");
+    btn[1].setString("Randomized data");
+    btn[2].setString("Insert to the first");
+    btn[3].setString("Insert to the last");
+    btn[4].setString("Insert to the middle");
+    btn[5].setString("Delete at the first");
+    btn[6].setString("Delete at the last");
+    btn[7].setString("Delete at the middle");
+    btn[8].setString("Update");
+    btn[9].setString("Search");
+    
     sf::Text Warnings1;
     Warnings1.setFont(arial);
     Warnings1.setCharacterSize(20);
     Warnings1.setString("You can not have more than 7 elements!");
-    Warnings1.sf::Text::setFillColor(TextColor);
-    Warnings1.setPosition({ 50, 173 });
+    Warnings1.sf::Text::setFillColor(sf::Color::Cyan);
+    Warnings1.setPosition({ 500, 50 });
+    Warnings1.setStyle(sf::Text::Bold);
 
     sf::Text Warnings2;
     Warnings2.setFont(arial);
     Warnings2.setCharacterSize(20);
     Warnings2.setString("It is empty!");
-    Warnings2.sf::Text::setFillColor(TextColor);
+    Warnings2.sf::Text::setFillColor(sf::Color::Cyan);
+    Warnings2.setPosition({ 500, 50 });
+    Warnings2.setStyle(sf::Text::Bold);
+
+    Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    btnHome.setPos({ 1200, 0 });
+    btnHome.setFont(arial);
 
     Doubly Example;
     Set(Example, Initialize());
@@ -267,6 +269,7 @@ void DoublyClient(sf::Event Events, sf::RenderWindow& window)
 
     while (window.isOpen())
     {
+        
         while (window.pollEvent(Events))
         {
             if (Done != 0)
@@ -280,80 +283,138 @@ void DoublyClient(sf::Event Events, sf::RenderWindow& window)
                     break;
 
                 case 2:
-                    if (Example.isFull())
-                    {
-                        Type = 1;
-                    }
-                    else
-                    {
-                        Type = 0;
-                        Done = 2;
-                        std::string X = GetData(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Done);
-                        std::cout << Done << "1" << std::endl;
-                        if (Done != 0) break;
-                        Done = 2;
-                        int Y = GetLocation(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Example.GetSize(), Done);
-                        std::cout << Done << "2" << std::endl;
-                        if (Done != 0) break;
-                        std::cout << Done << "3" << std::endl;
-                        Add(Example, X, Y);
-                    }
+                    Type = 0;
+                    Done = 0;
+                    Set(Example, Initialize());
                     break;
 
                 case 3:
-                    if (Example.isEmpty())
+                    if (Example.isFull())
                     {
-                        Warnings2.setPosition({ 50, 323 });
-                        Type = 2;
+                        Type = 1;
+                        Done = 0;
                     }
                     else
                     {
                         Type = 0;
                         Done = 3;
-                        int X = GetLocation(Events, window, btn1, btn2, btn4, btn5, btn6, btn3, Example.GetSize() - 1, Done);
+                        std::string X = GetData(Events, window, btn, 10, 3, Done);
                         if (Done != 0) break;
-                        Delete(Example, X);
+                        AddFirst(Example, X);
                     }
                     break;
 
                 case 4:
-                    if (Example.isEmpty())
+                    if (Example.isFull())
                     {
-                        Warnings2.setPosition({ 50, 473 });
-                        Type = 2;
+                        Type = 1;
+                        Done = 0;
                     }
                     else
                     {
                         Type = 0;
                         Done = 4;
-                        std::string X = GetData(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Done);
+                        std::string X = GetData(Events, window, btn, 10, 4, Done);
                         if (Done != 0) break;
-                        Done = 4;
-                        int Y = GetLocation(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Example.GetSize() - 1, Done);
-                        if (Done != 0) break;
-                        Update(Example, X, Y);
+                        AddLast(Example, X);
                     }
                     break;
 
                 case 5:
-                    if (Example.isEmpty())
+                    if (Example.isFull())
                     {
-                        Warnings2.setPosition({ 50, 623 });
-                        Type = 2;
+                        Type = 1;
+                        Done = 0;
                     }
                     else
                     {
                         Type = 0;
                         Done = 5;
-                        std::string X = GetData(Events, window, btn1, btn2, btn3, btn4, btn6, btn5, Done);
+                        std::string X = GetData(Events, window, btn, 10, 5, Done);
+                        if (Done != 0) break;
+                        AddMiddle(Example, X);
+                    }
+                    break;
+
+                case 6:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        DeleteFirst(Example);
+                        Done = 0;
+                    }
+                    break;
+
+                case 7:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        DeleteLast(Example);
+                        Done = 0;
+                    }
+                    break;
+
+                case 8:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        DeleteMiddle(Example);
+                        Done = 0;
+                    }
+                    break;
+
+                case 9:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        Done = 9;
+                        std::string X = GetData(Events, window, btn, 10, 9, Done);
+                        if (Done != 0) break;
+                        Done = 9;
+                        int Y = GetLocation(Events, window, btn, 10, 9, Example.GetSize() - 1, Done);
+                        if (Done != 0) break;
+                        Update(Example, X, Y);
+                    }
+                    break;
+
+                case 10:
+                    if (Example.isEmpty())
+                    {
+                        Type = 2;
+                        Done = 0;
+                    }
+                    else
+                    {
+                        Type = 0;
+                        Done = 5;
+                        std::string X = GetData(Events, window, btn, 10, 10, Done);
                         if (Done != 0) break;
                         Search(Example, X);
                     }
                     break;
-                case 6:
-                    Done = 0;
+
+                case -1:
                     return;
-                    break;
                 }
             }
             else
@@ -364,137 +425,50 @@ void DoublyClient(sf::Event Events, sf::RenderWindow& window)
                     window.close();
                     break;
 
-                case sf::Event::MouseMoved:
-                    if (btn1.isMouseOver(window))
+                case sf::Event::MouseButtonPressed:
+                    if (btnHome.isMouseOver(window))
                     {
-                        btn1.setBackColor(sf::Color::White);
-                    }
-                    else if (btn2.isMouseOver(window))
-                    {
-                        btn2.setBackColor(sf::Color::White);
-                    }
-                    else if (btn3.isMouseOver(window))
-                    {
-                        btn3.setBackColor(sf::Color::White);
-                    }
-                    else if (btn4.isMouseOver(window))
-                    {
-                        btn4.setBackColor(sf::Color::White);
-                    }
-                    else if (btn5.isMouseOver(window))
-                    {
-                        btn5.setBackColor(sf::Color::White);
-                    }
-                    else if (btn6.isMouseOver(window))
-                    {
-                        btn6.setBackColor(sf::Color::White);
+                        return;
                     }
                     else
                     {
-                        btn1.setBackColor(BoxColor);
-                        btn2.setBackColor(BoxColor);
-                        btn3.setBackColor(BoxColor);
-                        btn4.setBackColor(BoxColor);
-                        btn5.setBackColor(BoxColor);
-                        btn6.setBackColor(sf::Color::Cyan);
-                    }
-                    break;
-
-                case sf::Event::MouseButtonPressed:
-                    if (btn1.isMouseOver(window))
-                    {
-                        Type = 0;
-                        Set(Example, Initialize());
-                    }
-                    else if (btn2.isMouseOver(window))
-                    {
-                        if (Example.isFull())
+                        for (int i = 0; i < 10; i++)
+                        if (btn[i].isMouseOver(window))
                         {
-                            Type = 1;
+                            Done = i + 1;
+                            break;
                         }
-                        else
-                        {
-                            Type = 0;
-                            Done = 2;
-                            std::string X = GetData(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Done);
-                            std::cout << Done << "5" << std::endl;
-                            if (Done != 0) break;
-                            Done = 2;
-                            int Y = GetLocation(Events, window, btn1, btn3, btn4, btn5, btn6, btn2, Example.GetSize(), Done);
-                            std::cout << Done << "6" << std::endl;
-                            if (Done != 0) break;
-                            Add(Example, X, Y);
-                            Type = 0;
-                        }
-                    }
-                    else if (btn3.isMouseOver(window))
-                    {
-                        if (Example.isEmpty())
-                        {
-                            Warnings2.setPosition({ 50, 283 });
-                            Type = 2;
-                        }
-                        else
-                        {
-                            Type = 0;
-                            Done = 3;
-                            int X = GetLocation(Events, window, btn1, btn2, btn4, btn5, btn6, btn3, Example.GetSize() - 1, Done);
-                            if (Done != 0) break;
-                            Delete(Example, X);
-                        }
-                    }
-                    else if (btn4.isMouseOver(window))
-                    {
-                        if (Example.isEmpty())
-                        {
-                            Warnings2.setPosition({ 50, 413 });
-                            Type = 2;
-                        }
-                        else
-                        {
-                            Type = 0;
-                            Done = 4;
-                            std::string X = GetData(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Done);
-                            if (Done != 0) break;
-                            Done = 4;
-                            int Y = GetLocation(Events, window, btn1, btn2, btn3, btn5, btn6, btn4, Example.GetSize() - 1, Done);
-                            if (Done != 0) break;
-                            Update(Example, X, Y);
-                        }
-                    }
-                    else if (btn5.isMouseOver(window))
-                    {
-                        if (Example.isEmpty())
-                        {
-                            Warnings2.setPosition({ 50, 543 });
-                            Type = 2;
-                        }
-                        else
-                        {
-                            Type = 0;
-                            Done = 5;
-                            std::string X = GetData(Events, window, btn1, btn2, btn3, btn4, btn6, btn5, Done);
-                            if (Done != 0) break;
-                            Search(Example, X);
-                        }
-                    }
-                    else if (btn6.isMouseOver(window))
-                    {
-                        return;
                     }
                 }
             }
         }
+
+        if(btnHome.isMouseOver(window))
+        {
+            btnHome.setBackColor(sf::Color::White);
+        }
+        else
+        {
+            btnHome.setBackColor(sf::Color::Cyan);
+            for (int i = 0; i < 10; i++)
+                if (btn[i].isMouseOver(window))
+                    btn[i].setBackColor(sf::Color::White);
+                else btn[i].setBackColor(BoxColor);
+        }
+
         window.clear(ScreenColor);
+
+        btnHome.drawto(window);
+
         Example.Print();
-        btn1.drawto(window);
-        btn2.drawto(window);
-        btn3.drawto(window);
-        btn4.drawto(window);
-        btn5.drawto(window);
-        btn6.drawto(window);
+
+        for (int i = 0; i < 10; i++)
+            btn[i].drawto(window);
+
         if (Type == 1) window.draw(Warnings1);
         else if (Type == 2) window.draw(Warnings2);
+
         window.display();
+        
     }
 }
