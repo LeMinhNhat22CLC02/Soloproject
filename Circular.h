@@ -5,79 +5,40 @@
 
 class Circular {
 public:
-    Circular() : head(nullptr), tail(nullptr), size(0) {}
-
-    void addFront(int val) 
+    Circular() 
     {
-        Node* newNode = new Node();
-        newNode->data = val;
-        newNode->next = nullptr;
-
-        if (head == nullptr) 
-        {
-            head = newNode;
-            tail = newNode;
-            tail->next = head;
-        }
-        else 
-        {
-            newNode->next = head;
-            head = newNode;
-            tail->next = head;
-        }
-
-        size++;
+        head = nullptr;
+        tail = nullptr;
+        size = 0;
     }
 
-    void addMiddle(int val, int pos) 
-    {
+    void AddNode(std::string val) {
         Node* newNode = new Node();
         newNode->data = val;
-        newNode->next = nullptr;
-
-        if (pos == 0) 
-        {
-            addFront(val);
-            return;
+        if (head == NULL) {
+            head = newNode;
+            tail = newNode;
+            newNode->next = head;
         }
-        else if (pos == size) 
-        {
+        else {
             tail->next = newNode;
             tail = newNode;
             tail->next = head;
         }
-        else 
-        {
-            Node* current = head;
-            for (int i = 0; i < pos - 1; i++) 
-            {
-                current = current->next;
-            }
-            newNode->next = current->next;
-            current->next = newNode;
-        }
-
-        size++;
     }
 
-    void print() {
-        Node* current = head;
-
-        while (current != head)
-        {
-            std::cout << current->data << " ";
-            current = current->next;
-        } 
-
-        std::cout << std::endl;
-    }
 private:
     struct Node {
-        int data;
+        std::string data;
         Node* next;
+        Node ()
+        {
+            data = "";
+            next = nullptr;
+        }
     };
     Node* head;
-    Node *tail;
+    Node* tail;
 	int size;
 };
 

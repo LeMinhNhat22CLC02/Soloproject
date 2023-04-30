@@ -43,6 +43,11 @@ void Singly::AddFirst(std::string X)
 
 void Singly::AddLast(std::string X)
 {
+    if (size == 0)
+    {
+        AddFirst(X);
+        return;
+    }
     Node* temp = head;
     int Location = size - 1;
     while (Location--)
@@ -58,6 +63,11 @@ void Singly::AddLast(std::string X)
 
 void Singly::AddMiddle(std::string X)
 {
+    if (size == 0)
+    {
+        AddFirst(X);
+        return;
+    }
     Node* temp = head;
     int Location = size/2 - 1;
     while (Location--)

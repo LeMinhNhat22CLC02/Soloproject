@@ -19,9 +19,9 @@ Doubly::~Doubly()
     }
 }
 
-void Doubly::AddFirst(std::string val)
+void Doubly::AddFirst(std::string X)
 {
-    Node* newNode = new Node(val);
+    Node* newNode = new Node(X);
     if (head == nullptr)
     {
         head = tail = newNode;
@@ -35,9 +35,9 @@ void Doubly::AddFirst(std::string val)
     size++;
 }
 
-void Doubly::AddLast(std::string val)
+void Doubly::AddLast(std::string X)
 {
-    Node* newNode = new Node(val);
+    Node* newNode = new Node(X);
     if (tail == nullptr)
     {
         head = tail = newNode;
@@ -53,6 +53,12 @@ void Doubly::AddLast(std::string val)
 
 void Doubly::AddMiddle(std::string X)
 {
+    Node* newNode = new Node(X);
+    if (head == nullptr)
+    {
+        head = tail = newNode;
+        return;
+    }
     Node* Pre = head;
     for (int i = 0; i < size/2 - 1; i++)
         Pre = Pre->next;
@@ -97,6 +103,11 @@ void Doubly::DeleteFirst()
 
 void Doubly::DeleteMiddle()
 {
+    if (size == 1)
+    {
+        DeleteFirst();
+        return;
+    }
     Node* Pre = head;
     for (int i = 0; i < size/2 - 1; i++)
         Pre = Pre->next;
