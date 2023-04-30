@@ -8,8 +8,12 @@ public:
     Singly();
     ~Singly();
     void Set(std::vector<std::string> X);
-    void Add(std::string X, int Location);
-    void Delete(int Location);
+    void AddFirst(std::string X);
+    void AddLast(std::string X);
+    void AddMiddle(std::string X);
+    void DeleteFirst();
+    void DeleteLast();
+    void DeleteMiddle();
     void Update(std::string X, int Location);
     void Search(std::string X);
     int GetSize();
@@ -27,8 +31,12 @@ private:
 };
 
 void Set(Singly& X, std::vector<std::string> Y);
-void Add(Singly& X, std::string Y, int Z);
-void Delete(Singly& X, int Y);
+void AddFirst(Singly& X, std::string Y);
+void AddLast(Singly& X, std::string Y);
+void AddMiddle(Singly& X, std::string Y);
+void DeleteFirst(Singly& X);
+void DeleteLast(Singly& X);
+void DeleteMiddle(Singly& X);
 void Update(Singly& X, std::string Y, int Z);
 void Search(Singly& X, std::string Y);
 void SinglyClient(sf::Event Events, sf::RenderWindow& window);

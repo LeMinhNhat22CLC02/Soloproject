@@ -48,7 +48,7 @@ void Dynamic::Set(std::vector<std::string> X)
 {
     for (int i = 0; i < (int)X.size(); i++)
         data[i] = X[i];
-    size = X.size();
+    size = (int)X.size();
 }
 
 void Dynamic::Print()
