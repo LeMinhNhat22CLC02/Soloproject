@@ -94,7 +94,7 @@ void Singly::DeleteLast()
         DeleteFirst();
         return;
     }
-    int Location = std::max(0, size - 2);
+    int Location = size - 2;
     Node* temp = head;
     while (Location--)
     {
@@ -113,7 +113,7 @@ void Singly::DeleteMiddle()
         DeleteFirst();
         return;
     }
-    int Location = std::max(0, size / 2 - 1);
+    int Location = size / 2 - 1;
     Node* temp = head;
     while (Location--)
     {
