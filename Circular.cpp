@@ -21,13 +21,15 @@ void Circular::Set(std::vector<std::string> X)
 void Circular::AddLast(std::string X) {
     Node* newNode = new Node();
     newNode->data = X;
-    if (head == nullptr) {
+    if (head == nullptr) 
+    {
         head = newNode;
         tail = newNode;
         newNode->next = head;
         size++;
     }
-    else {
+    else 
+    {
         tail->next = newNode;
         tail = newNode;
         tail->next = head;
@@ -65,12 +67,14 @@ void Circular::AddFirst(std::string X)
 {
     Node* newNode = new Node();
     newNode->data = X;
-    if (head == nullptr) {
+    if (head == nullptr) 
+    {
         head = newNode;
         tail = newNode;
         newNode->next = head;
     }
-    else {
+    else 
+    {
         newNode->next = head;
         head = newNode;
         tail->next = head;
