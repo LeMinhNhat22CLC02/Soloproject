@@ -130,12 +130,14 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
         {
             if (Done != 0)
             {
+                const char* Path = nullptr;
                 switch (Done)
                 {
                 case 1:
                     Type = 0;
                     Done = 0;
-                    Set(Example, Initialize(), n);
+                    Path = FindPath();
+                    if (Path != nullptr) Set(Example, ReadFromFile(Path), n);
                     break;
 
                 case 2:

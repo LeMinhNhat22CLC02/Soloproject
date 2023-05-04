@@ -284,12 +284,14 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
         {
             if (Done != 0)
             {
+                const char* Path = nullptr;
                 switch (Done)
                 {
                 case 1:
                     Type = 0;
                     Done = 0;
-                    Set(Example, Initialize());
+                    Path = FindPath();
+                    if (Path != nullptr) Set(Example, ReadFromFile(Path));
                     break;
 
                 case 2:

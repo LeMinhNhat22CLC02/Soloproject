@@ -21,19 +21,18 @@ bool Stack::isEmpty()
 
 bool Stack::isFull()
 {
+    std::cout << data.size() << " " << Size << "\n";
     return (data.size() == Size);
 }
 
 void Stack::Push(std::string X)
 {
     data.push_back(X);
-    Size++;
 }
 
 void Stack::Pop()
 {
     data.pop_back();
-    Size--;
 }
 
 void Stack::Print(sf::RenderWindow& window)
@@ -51,23 +50,21 @@ void Stack::Print(sf::RenderWindow& window)
     Data.sf::Text::setFillColor(TextColor);
     Data.setStyle(sf::Text::Bold);
 
-    sf::RectangleShape Box;
-    Box.setSize({ 100, 100 });
+    sf::CircleShape Box(50.f);
     Box.setFillColor(BoxColor);
-    Box.setOutlineThickness(5);
+    Box.setFillColor(BoxColor);
+    Box.setOutlineThickness(3);
     Box.setOutlineColor(OutColor);
 
     for (int i = 0; i < (int)data.size(); i++)
     {
         Data.setString(data[i]);
-        Data.setPosition({ (float)225 + i * (150), 250 });
+        Data.setPosition({ (float)240 + i * (150), 292.5 });
         Box.setPosition({ (float)225 + i * (150), 250 });
 
         window.draw(Box);
         window.draw(Data);
-        std::cout << data[i] << " ";
     }
-    std::cout << std::endl;
 }
 
 int Stack::GetSize()
@@ -146,12 +143,14 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
         {
             if (Done != 0)
             {
+                const char* Path = nullptr;
                 switch (Done)
                 {
                 case 1:
                     Type = 0;
                     Done = 0;
-                    Set(Example, Initialize());
+                    Path = FindPath();
+                    if (Path != nullptr) Set(Example, ReadFromFile(Path));
                     break;
 
                 case 2:

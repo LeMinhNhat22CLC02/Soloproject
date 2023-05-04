@@ -1,8 +1,10 @@
 #include<iostream>
+#include<fstream>
 #include<SFML/Graphics.hpp>
+#include<string>
 #include"Buttons.h"
 #include"TextBox.h"
-#include<string>
+#include"external/tinyfiledialogs.h"
 
 #define ENTER_KEY 13
 
@@ -17,6 +19,25 @@ std::vector<std::string> Initialize()
     Temp.push_back((char)('a' + rand() % 26) + std::to_string(rand() % 100) + (char)('A' + rand() % 26));
 
     return Temp;
+}
+
+std::vector<std::string> ReadFromFile(const char* inputPath)
+{
+    std::ifstream file(inputPath);
+    std::vector<std::string> Temp;
+    std::string ToAdd;
+    while (file >> ToAdd)
+    {
+        Temp.push_back(ToAdd);
+    }
+    file.close();
+    return Temp;
+}
+
+const char* FindPath()
+{
+    const char* inputPath = tinyfd_openFileDialog("Open File", "", 0, NULL, NULL, 0);
+    return inputPath;
 }
 
 int WhatType(std::string X, int Datasize)

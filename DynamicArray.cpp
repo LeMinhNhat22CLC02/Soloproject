@@ -4,6 +4,7 @@
 #include"Buttons.h"
 #include"TextBox.h"
 #include"InputData.h"
+#include"Objects.h"
 
 Dynamic::Dynamic()
 {
@@ -49,26 +50,53 @@ void Dynamic::Set(std::vector<std::string> X)
     for (int i = 0; i < (int)X.size(); i++)
         data[i] = X[i];
     size = (int)X.size();
+    capacity = std::max(capacity, size);
 }
 
-void Dynamic::Print()
+void Dynamic::Print(sf::RenderWindow& window)
 {
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Data;
+    Data.setFont(arial);
+    Data.setCharacterSize(15);
+    Data.sf::Text::setFillColor(TextColor);
+    Data.setStyle(sf::Text::Bold);
+
     for (int i = 0; i < size; i++)
     {
-        std::cout << data[i] << " ";
+        Data.setString(data[i]);
+        Data.setPosition({ (float)240 + i * (150), 292.5 });
+
+        window.draw(Data);
     }
-    std::cout << std::endl;
 }
 
-void Dynamic::AddFirst(std::string X)
+void Dynamic::AddFirst(std::string X, sf::RenderWindow& window)
 {
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+
+    sf::CircleShape Box(50.f);
+    Box.setFillColor(BoxColor);
+    Box.setFillColor(BoxColor);
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+
+    ///Box.setPosition({ (float)225 + i * (150), 250 });
+    sf::sleep(sf::seconds(1));
     for (int i = size; i >= 1; i--)
+    {
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
+    }
     data[0] = X;
     size++;
 }
 
-void Dynamic::AddMiddle(std::string X)
+void Dynamic::AddMiddle(std::string X, sf::RenderWindow& window)
 {
     for (int i = size; i >= size / 2; i--)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
@@ -76,26 +104,26 @@ void Dynamic::AddMiddle(std::string X)
     size++;
 }
 
-void Dynamic::AddLast(std::string X)
+void Dynamic::AddLast(std::string X, sf::RenderWindow& window)
 {
     data[size] = X;
     size++;
 }
 
-void Dynamic::DeleteFirst()
+void Dynamic::DeleteFirst(sf::RenderWindow& window)
 {
     size--;
     for (int i = 0; i < size; i++)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
 }
 
-void Dynamic::DeleteMiddle()
+void Dynamic::DeleteMiddle(sf::RenderWindow& window)
 {
     size--;
     for (int i = size / 2; i < size; i++)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
 }
-void Dynamic::DeleteLast()
+void Dynamic::DeleteLast(sf::RenderWindow& window)
 {
     size--;
 }
@@ -136,38 +164,37 @@ void Dynamic::Search(std::string X)
 void Set(Dynamic& X, std::vector<std::string> Y)
 {
     X.Set(Y);
-    X.Print();
     std::cout << X.GetSize();
 }
 
-void AddFirst(Dynamic& X, std::string Y)
+void AddFirst(Dynamic& X, std::string Y, sf::RenderWindow& window)
 {
-    X.AddFirst(Y);
+    X.AddFirst(Y, window);
 }
 
-void AddMiddle(Dynamic& X, std::string Y)
+void AddMiddle(Dynamic& X, std::string Y, sf::RenderWindow& window)
 {
-    X.AddMiddle(Y);
+    X.AddMiddle(Y, window);
 }
 
-void AddLast(Dynamic& X, std::string Y)
+void AddLast(Dynamic& X, std::string Y, sf::RenderWindow& window)
 {
-    X.AddLast(Y);
+    X.AddLast(Y, window);
 }
 
-void DeleteFirst(Dynamic& X)
+void DeleteFirst(Dynamic& X, sf::RenderWindow& window)
 {
-    X.DeleteFirst();
+    X.DeleteFirst(window);
 }
 
-void DeleteMiddle(Dynamic& X)
+void DeleteMiddle(Dynamic& X, sf::RenderWindow& window)
 {
-    X.DeleteMiddle();
+    X.DeleteMiddle(window);
 }
 
-void DeleteLast(Dynamic& X)
+void DeleteLast(Dynamic& X, sf::RenderWindow& window)
 {
-    X.DeleteLast();
+    X.DeleteLast(window);
 }
 
 void Update(Dynamic& X, std::string Y, int Z)
@@ -177,6 +204,7 @@ void Update(Dynamic& X, std::string Y, int Z)
 
 void Search(Dynamic& X, std::string Y)
 {
+    X.Search(Y);
 }
 
 void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
@@ -205,7 +233,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
     btn[6].setString("Delete at the last");
     btn[7].setString("Delete at the middle");
     btn[8].setString("Update");
-    btn[9].setString("Alocate");
+    btn[9].setString("Allocate");
     btn[10].setString("Access");
     btn[11].setString("Search");
 
@@ -225,6 +253,14 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
     Warnings2.setPosition({ 500, 50 });
     Warnings2.setStyle(sf::Text::Bold);
 
+    sf::Text Warnings3;
+    Warnings3.setFont(arial);
+    Warnings3.setCharacterSize(20);
+    Warnings3.setString("You reach the max size. Please allocate a larger size!");
+    Warnings3.sf::Text::setFillColor(sf::Color::Cyan);
+    Warnings3.setPosition({ 500, 50 });
+    Warnings3.setStyle(sf::Text::Bold);
+
     Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
@@ -235,18 +271,21 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
     int Type = 0;
     int Done = 0;
 
+
     while (window.isOpen())
     {
         while (window.pollEvent(Events))
         {
             if (Done != 0)
             {
+                const char* Path = nullptr;
                 switch (Done)
                 {
                 case 1:
                     Type = 0;
                     Done = 0;
-                    Set(Example, Initialize());
+                    Path = FindPath();
+                    if (Path != nullptr) Set(Example, ReadFromFile(Path));
                     break;
 
                 case 2:
@@ -256,6 +295,12 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     break;
 
                 case 3:
+                    if (Example.isMax())
+                    {
+                        Type = 3;
+                        Done = 0;
+                    }
+                    else
                     if (Example.isFull())
                     {
                         Type = 1;
@@ -267,12 +312,18 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 12, 3, Done);
                         if (Done != 0) break;
-                        if (Example.isMax()) Example.resize(Example.GetSize() + 1);
-                        AddFirst(Example, X);
+                        
+                        AddFirst(Example, X, window);
                     }
                     break;
 
                 case 4:
+                    if (Example.isMax())
+                    {
+                        Type = 3;
+                        Done = 0;
+                    }
+                    else
                     if (Example.isFull())
                     {
                         Type = 1;
@@ -285,11 +336,17 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 12, 4, Done);
                         if (Done != 0) break;
                         if (Example.isMax()) Example.resize(Example.GetSize() + 1);
-                        AddLast(Example, X);
+                        AddLast(Example, X, window);
                     }
                     break;
 
                 case 5:
+                    if (Example.isMax())
+                    {
+                        Type = 3;
+                        Done = 0;
+                    }
+                    else
                     if (Example.isFull())
                     {
                         Type = 1;
@@ -302,7 +359,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 12, 5, Done);
                         if (Done != 0) break;
                         if (Example.isMax()) Example.resize(Example.GetSize() + 1);
-                        AddMiddle(Example, X);
+                        AddMiddle(Example, X, window);
                     }
                     break;
 
@@ -315,7 +372,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteFirst(Example);
+                        DeleteFirst(Example, window);
                         Done = 0;
                     }
                     break;
@@ -329,7 +386,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteLast(Example);
+                        DeleteLast(Example, window);
                         Done = 0;
                     }
                     break;
@@ -343,7 +400,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteMiddle(Example);
+                        DeleteMiddle(Example, window);
                         Done = 0;
                     }
                     break;
@@ -455,13 +512,17 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
 
         btnHome.drawto(window);
 
-        Example.Print();
+        PrintBox(Example.getCap(), window);
+        Example.Print(window);
+
+        ///Test.drawto(window);
 
         for (int i = 0; i < 12; i++)
             btn[i].drawto(window);
 
         if (Type == 1) window.draw(Warnings1);
         else if (Type == 2) window.draw(Warnings2);
+        else if (Type == 3) window.draw(Warnings3);
 
         window.display();
     }
