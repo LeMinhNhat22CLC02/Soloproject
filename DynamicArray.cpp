@@ -9,8 +9,8 @@
 Dynamic::Dynamic()
 {
     size = 0;
-    capacity = 5;
-    data.resize(5, "");
+    capacity = 6;
+    data.resize(6, "");
 }
 
 Dynamic::Dynamic(int cap)
@@ -53,7 +53,7 @@ void Dynamic::Set(std::vector<std::string> X)
     capacity = std::max(capacity, size);
 }
 
-void Dynamic::Print(sf::RenderWindow& window)
+void Dynamic::Print(sf::RenderWindow& window, int Nprint)
 {
     sf::Font arial;
     arial.loadFromFile("arial.ttf");
@@ -69,42 +69,53 @@ void Dynamic::Print(sf::RenderWindow& window)
     for (int i = 0; i < size; i++)
     {
         Data.setString(data[i]);
-        Data.setPosition({ (float)240 + i * (150), 292.5 });
+
+        if (i >= Nprint) Data.setPosition({ (float)390 + i * (150), 292.5 });
+        else Data.setPosition({ (float)240 + i * (150), 292.5 });
 
         window.draw(Data);
     }
 }
 
 void Dynamic::AddFirst(std::string X, sf::RenderWindow& window)
-{
-    sf::Color OutColor(241, 70, 102);
-    sf::Color BoxColor(255, 220, 195);
-
-    sf::CircleShape Box(50.f);
-    Box.setFillColor(BoxColor);
-    Box.setFillColor(BoxColor);
-    Box.setOutlineThickness(3);
-    Box.setOutlineColor(OutColor);
-
-    ///Box.setPosition({ (float)225 + i * (150), 250 });
-    sf::sleep(sf::seconds(1));
+{   
+    PrintBox(capacity, window);
+    Print(window, 8);
+    window.display();
     for (int i = size; i >= 1; i--)
     {
-        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
+        sf::sleep(sf::seconds(1));
+        PrintBox(capacity, window);
+        Print(window, i - 1);
+        window.display();
     }
+
+    for (int i = size; i >= 1; i--)
+        data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
     data[0] = X;
     size++;
 }
 
 void Dynamic::AddMiddle(std::string X, sf::RenderWindow& window)
 {
+    PrintBox(capacity, window);
+    Print(window, 8);
+    window.display();
+    for (int i = size; i >= size / 2; i--)
+    {
+        sf::sleep(sf::seconds(1));
+        PrintBox(capacity, window);
+        Print(window, i - 1);
+        window.display();
+    }
+
     for (int i = size; i >= size / 2; i--)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
     data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(size / 2) - 1] = X;
     size++;
 }
 
-void Dynamic::AddLast(std::string X, sf::RenderWindow& window)
+void Dynamic::AddLast(std::string X)
 {
     data[size] = X;
     size++;
@@ -112,18 +123,42 @@ void Dynamic::AddLast(std::string X, sf::RenderWindow& window)
 
 void Dynamic::DeleteFirst(sf::RenderWindow& window)
 {
+    PrintBox(capacity, window);
+    Print(window, 8);
+    window.display();
+
     size--;
     for (int i = 0; i < size; i++)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
+
+    for (int i = 0; i < size; i++)
+    {
+        sf::sleep(sf::seconds(1));
+        PrintBox(capacity, window);
+        Print(window, i + 1);
+        window.display();
+    }
 }
 
 void Dynamic::DeleteMiddle(sf::RenderWindow& window)
 {
+    PrintBox(capacity, window);
+    Print(window, 8);
+    window.display();
+
     size--;
     for (int i = size / 2; i < size; i++)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
+
+    for (int i = size / 2; i < size; i++)
+    {
+        sf::sleep(sf::seconds(1));
+        PrintBox(capacity, window);
+        Print(window, i + 1);
+        window.display();
+    }
 }
-void Dynamic::DeleteLast(sf::RenderWindow& window)
+void Dynamic::DeleteLast()
 {
     size--;
 }
@@ -148,23 +183,16 @@ int Dynamic::getCap()
     return capacity;
 }
 
-void Dynamic::Search(std::string X)
+int Dynamic::Search(std::string X)
 {
     for (int i = 0; i < size; i++)
-    {
-        if (X == data[i])
-        {
-            std::cout << i << std::endl;
-            return;
-        }
-    }
-    std::cout << -1 << std::endl;
+    if (X == data[i]) return i;
+    return -1;
 }
 
 void Set(Dynamic& X, std::vector<std::string> Y)
 {
     X.Set(Y);
-    std::cout << X.GetSize();
 }
 
 void AddFirst(Dynamic& X, std::string Y, sf::RenderWindow& window)
@@ -177,9 +205,9 @@ void AddMiddle(Dynamic& X, std::string Y, sf::RenderWindow& window)
     X.AddMiddle(Y, window);
 }
 
-void AddLast(Dynamic& X, std::string Y, sf::RenderWindow& window)
+void AddLast(Dynamic& X, std::string Y)
 {
-    X.AddLast(Y, window);
+    X.AddLast(Y);
 }
 
 void DeleteFirst(Dynamic& X, sf::RenderWindow& window)
@@ -192,9 +220,9 @@ void DeleteMiddle(Dynamic& X, sf::RenderWindow& window)
     X.DeleteMiddle(window);
 }
 
-void DeleteLast(Dynamic& X, sf::RenderWindow& window)
+void DeleteLast(Dynamic& X)
 {
-    X.DeleteLast(window);
+    X.DeleteLast();
 }
 
 void Update(Dynamic& X, std::string Y, int Z)
@@ -202,9 +230,9 @@ void Update(Dynamic& X, std::string Y, int Z)
     X.Update(Y, Z);
 }
 
-void Search(Dynamic& X, std::string Y)
+int Search(Dynamic& X, std::string Y)
 {
-    X.Search(Y);
+    return X.Search(Y);
 }
 
 void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
@@ -260,6 +288,14 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
     Warnings3.sf::Text::setFillColor(sf::Color::Cyan);
     Warnings3.setPosition({ 500, 50 });
     Warnings3.setStyle(sf::Text::Bold);
+
+    sf::Text Answer;
+    Answer.setFont(arial);
+    Answer.setCharacterSize(20);
+    Answer.setString("");
+    Answer.sf::Text::setFillColor(sf::Color::Cyan);
+    Answer.setPosition({ 500, 50 });
+    Answer.setStyle(sf::Text::Bold);
 
     Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
@@ -336,7 +372,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 12, 4, Done);
                         if (Done != 0) break;
                         if (Example.isMax()) Example.resize(Example.GetSize() + 1);
-                        AddLast(Example, X, window);
+                        AddLast(Example, X);
                     }
                     break;
 
@@ -386,7 +422,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteLast(Example, window);
+                        DeleteLast(Example);
                         Done = 0;
                     }
                     break;
@@ -445,7 +481,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 10;
                         int Y = GetLocation(Events, window, btn, 12, 11, Example.GetSize() - 1, Done);
                         if (Done != 0) break;
-                        std::cout << Example[Y] << "\n";
+                        Answer.setString("The value is " + Example[Y]);
                     }
                     break;
 
@@ -461,7 +497,9 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 12, 12, Done);
                         if (Done != 0) break;
-                        Search(Example, X);
+                        int Y = Search(Example, X);
+                        if (Y == -1) Answer.setString("Can't find " + X);
+                        else Answer.setString(X + " at " + std::to_string(Y));
                     }
                     break;
 
@@ -487,6 +525,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         for (int i = 0; i < 12; i++)
                         if (btn[i].isMouseOver(window))
                         {
+                            Answer.setString("");
                             Done = i + 1;
                             break;
                         }
@@ -513,13 +552,12 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
         btnHome.drawto(window);
 
         PrintBox(Example.getCap(), window);
-        Example.Print(window);
-
-        ///Test.drawto(window);
+        Example.Print(window, 8);
 
         for (int i = 0; i < 12; i++)
             btn[i].drawto(window);
 
+        window.draw(Answer);
         if (Type == 1) window.draw(Warnings1);
         else if (Type == 2) window.draw(Warnings2);
         else if (Type == 3) window.draw(Warnings3);

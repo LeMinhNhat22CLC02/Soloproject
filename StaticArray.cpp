@@ -4,6 +4,7 @@
 #include"Buttons.h"
 #include"TextBox.h"
 #include"InputData.h"
+#include"Objects.h"
 
 void Set(std::string X[], std::vector<std::string> Y, int& n)
 {
@@ -12,40 +13,89 @@ void Set(std::string X[], std::vector<std::string> Y, int& n)
     n = (int)Y.size();
 }
 
-void AddFirst(std::string X[], std::string Y, int& n)
+void AddFirst(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 {
+    PrintBox(n + 1, window);
+    Print(window, X, n, 8);
+    window.display();
+    for (int i = n; i >= 1; i--)
+    {
+        sf::sleep(sf::seconds(1));
+        PrintBox(n + 1, window);
+        Print(window, X, n, i - 1);
+        window.display();
+    }
+
     for (int i = n; i > 0; i--)
         X[i] = X[i - 1];
     X[0] = Y;
     n++;
 }
 
-void AddMiddle(std::string X[], std::string Y, int& n)
+void AddMiddle(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 {
+    PrintBox(n + 1, window);
+    Print(window, X, n, 8);
+    window.display();
+    for (int i = n; i >= n/2; i--)
+    {
+        sf::sleep(sf::seconds(1));
+        PrintBox(n + 1, window);
+        Print(window, X, n, i - 1);
+        window.display();
+    }
+
     for (int i = n; i > n / 2; i--)
         X[i] = X[i - 1];
     X[n / 2] = Y;
     n++;
 }
 
-void AddLast(std::string X[], std::string Y, int& n)
+void AddLast(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 {
+    PrintBox(n + 1, window);
+    Print(window, X, n, 8);
+    sf::sleep(sf::seconds(1));
     X[n] = Y;
     n++;
 }
 
-void DeleteFirst(std::string X[], int& n)
+void DeleteFirst(std::string X[], int& n, sf::RenderWindow& window)
 {
+    PrintBox(n, window);
+    Print(window, X, n, 8);
+    window.display();
+
     n--;
     for (int i = 0; i < n; i++)
         X[i] = X[i + 1];
+
+    for (int i = 0; i < n; i++)
+    {
+        sf::sleep(sf::seconds(1));
+        PrintBox(n + 1, window);
+        Print(window, X, n, i + 1);
+        window.display();
+    }
 }
 
-void DeleteMiddle(std::string X[], int& n)
+void DeleteMiddle(std::string X[], int& n, sf::RenderWindow& window)
 {
+    PrintBox(n, window);
+    Print(window, X, n, 8);
+    window.display();
+
     n--;
     for (int i = n / 2; i < n; i++)
-        X[i] = X[i + 1];
+        X[i] = X[i + 1]; 
+
+    for (int i = n/2; i < n; i++)
+    {
+        sf::sleep(sf::seconds(1));
+        PrintBox(n + 1, window);
+        Print(window, X, n, i + 1);
+        window.display();
+    }
 }
 
 void DeleteLast(std::string X[], int& n)
@@ -58,14 +108,35 @@ void Update(std::string X[], std::string Y, int Z, int n)
     X[Z] = Y;
 }
 
-void Search(std::string X[], std::string Y, int n)
+int Search(std::string X[], std::string Y, int n)
 {
     for (int i = 0; i < n; i++)
-        if (X[i] == Y)
-        {
-            std::cout << i << std::endl;
-        }
-    std::cout << -1 << std::endl;
+    if (X[i] == Y) return i;
+    return -1;
+}
+
+void Print(sf::RenderWindow& window, std::string data[], int size, int Nprint)
+{
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Data;
+    Data.setFont(arial);
+    Data.setCharacterSize(15);
+    Data.sf::Text::setFillColor(TextColor);
+    Data.setStyle(sf::Text::Bold);
+
+    for (int i = 0; i < size; i++)
+    {
+        Data.setString(data[i]);
+
+        if (i >= Nprint) Data.setPosition({ (float)390 + i * (150), 292.5 });
+        else Data.setPosition({ (float)240 + i * (150), 292.5 });
+
+        window.draw(Data);
+    }
 }
 
 void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
@@ -113,6 +184,14 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
     Warnings2.setPosition({ 500, 50 });
     Warnings2.setStyle(sf::Text::Bold);
 
+    sf::Text Answer;
+    Answer.setFont(arial);
+    Answer.setCharacterSize(20);
+    Answer.setString("");
+    Answer.sf::Text::setFillColor(sf::Color::Cyan);
+    Answer.setPosition({ 500, 50 });
+    Answer.setStyle(sf::Text::Bold);
+
     Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
@@ -158,7 +237,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 11, 3, Done);
                         if (Done != 0) break;
-                        AddFirst(Example, X, n);
+                        AddFirst(Example, X, n, window);
                     }
                     break;
 
@@ -174,7 +253,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 4;
                         std::string X = GetData(Events, window, btn, 11, 4, Done);
                         if (Done != 0) break;
-                        AddLast(Example, X, n);
+                        AddLast(Example, X, n, window);
                     }
                     break;
 
@@ -190,7 +269,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 11, 5, Done);
                         if (Done != 0) break;
-                        AddMiddle(Example, X, n);
+                        AddMiddle(Example, X, n, window);
                     }
                     break;
 
@@ -203,7 +282,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteFirst(Example, n);
+                        DeleteFirst(Example, n, window);
                         Done = 0;
                     }
                     break;
@@ -231,7 +310,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteMiddle(Example, n);
+                        DeleteMiddle(Example, n, window);
                         Done = 0;
                     }
                     break;
@@ -267,7 +346,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 10;
                         int Y = GetLocation(Events, window, btn, 11, 10, n - 1, Done);
                         if (Done != 0) break;
-                        std::cout << Example[Y];
+                        Answer.setString("The value is " + Example[Y]);
                     }
                     break;
 
@@ -283,7 +362,9 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 11, 11, Done);
                         if (Done != 0) break;
-                        Search(Example, X, n);
+                        int Y = Search(Example, X, n);
+                        if (Y == -1) Answer.setString("Can't find " + X);
+                        else Answer.setString(X + " at " + std::to_string(Y));
                     }
                     break;
 
@@ -334,12 +415,13 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
 
         btnHome.drawto(window);
 
-        for (int i = 0; i < n; i++)
-            std::cout << Example[i] << " "; std::cout << "\n";
+        PrintBox(n, window);
+        Print(window, Example, n, 8);
 
         for (int i = 0; i < 11; i++)
             btn[i].drawto(window);
-        
+
+        window.draw(Answer);
         if (Type == 1) window.draw(Warnings1);
         else if (Type == 2) window.draw(Warnings2);
         
