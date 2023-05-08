@@ -4,6 +4,7 @@
 #include"Buttons.h"
 #include"TextBox.h"
 #include"InputData.h"
+#include"Objects.h"
 
 Stack::Stack() {
     Size = 7;
@@ -21,17 +22,22 @@ bool Stack::isEmpty()
 
 bool Stack::isFull()
 {
-    std::cout << data.size() << " " << Size << "\n";
     return (data.size() == Size);
 }
 
-void Stack::Push(std::string X)
+void Stack::Push(std::string X, sf::RenderWindow& window)
 {
     data.push_back(X);
+    PrintArrow(data.size() - 2, window);
+    PrintBox(data.size(), window);
+    Print(window);
 }
 
-void Stack::Pop()
+void Stack::Pop(sf::RenderWindow& window)
 {
+    PrintArrow(data.size() - 2, window);
+    PrintBox(data.size(), window);
+    Print(window);
     data.pop_back();
 }
 
@@ -77,14 +83,14 @@ void Set(Stack& X, std::vector<std::string> Y)
     X.Set(Y);
 }
 
-void Push(Stack& X, std::string Y)
+void Push(Stack& X, std::string Y, sf::RenderWindow& window)
 {
-    X.Push(Y);
+    X.Push(Y, window);
 }
 
-void Pop(Stack& X)
+void Pop(Stack& X, sf::RenderWindow& window)
 {
-    X.Pop();
+    X.Pop(window);
 }
 
 void StackClient(sf::Event Events, sf::RenderWindow& window)
@@ -126,6 +132,20 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
     Warnings2.setPosition({ 500, 50 });
     Warnings2.setStyle(sf::Text::Bold);
 
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setString("Head");
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
+    Tail.setString("Tail");
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
+    
     Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
@@ -171,7 +191,13 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 5, 3, Done);
                         if (Done != 0) break;
-                        Push(Example, X);
+                        Push(Example, X, window);
+                        Head.setPosition({ (float)240 + std::max(0, Example.GetSize() - 2) * 150, 212.5 });
+                        Tail.setPosition({ 240, 372.5 });
+                        window.draw(Head);
+                        window.draw(Tail);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
                     }
                     break;
 
@@ -183,7 +209,20 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
-                        Pop(Example);
+                        window.clear(ScreenColor);
+                        if (Example.GetSize() > 0)
+                        {
+                            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 212.5 });
+                            Tail.setPosition({ 240, 372.5 });
+                            window.draw(Head);
+                            window.draw(Tail);
+                        }
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 5; i++)
+                            btn[i].drawto(window);
+                        Pop(Example, window);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
                         Type = 0;
                         Done = 0;
                     }
@@ -240,8 +279,16 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
         window.clear(ScreenColor);
 
         btnHome.drawto(window);
-
+        PrintArrow(Example.GetSize() - 1, window);
         Example.Print(window);
+
+        if (Example.GetSize() > 0)
+        {
+            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 212.5 });
+            Tail.setPosition({ 240, 372.5 });
+            window.draw(Head);
+            window.draw(Tail);
+        }
 
         for (int i = 0; i < 5; i++)
             btn[i].drawto(window);

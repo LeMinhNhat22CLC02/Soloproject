@@ -4,7 +4,7 @@
 #include"Buttons.h"
 #include"TextBox.h"
 #include"InputData.h"
-
+#include"Objects.h"
 
 Doubly::Doubly() : head(nullptr), tail(nullptr), size(0) {}
 
@@ -472,7 +472,7 @@ void DoublyClient(sf::Event Events, sf::RenderWindow& window)
         window.clear(ScreenColor);
 
         btnHome.drawto(window);
-
+        PrintDoubleArrow(Example.GetSize() - 1, window);
         Example.Print();
 
         for (int i = 0; i < 10; i++)
