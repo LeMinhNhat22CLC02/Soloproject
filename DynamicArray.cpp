@@ -9,8 +9,8 @@
 Dynamic::Dynamic()
 {
     size = 0;
-    capacity = 6;
-    data.resize(6, "");
+    capacity = 5;
+    data.resize(5, "");
 }
 
 Dynamic::Dynamic(int cap)
@@ -158,6 +158,7 @@ void Dynamic::DeleteMiddle(sf::RenderWindow& window)
         window.display();
     }
 }
+
 void Dynamic::DeleteLast()
 {
     size--;
@@ -497,7 +498,43 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 12, 12, Done);
                         if (Done != 0) break;
-                        int Y = Search(Example, X);
+                        int Y = Search(Example, X); 
+                        if (Y == -1)
+                        {
+                            for (int i = 0; i < Example.GetSize(); i++)
+                            {
+                                window.clear(ScreenColor);
+
+                                btnHome.drawto(window);
+
+                                PrintBox(Example.getCap(), window);
+                                Example.Print(window, 8);
+
+                                for (int j = 0; j < 11; j++)
+                                    btn[j].drawto(window);
+                                ArrowPointAt(i, window);
+                                window.display();
+                                sf::sleep(sf::seconds(1));
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i <= Y; i++)
+                            {
+                                window.clear(ScreenColor);
+
+                                btnHome.drawto(window);
+
+                                PrintBox(Example.getCap(), window);
+                                Example.Print(window, 8);
+
+                                for (int j = 0; j < 11; j++)
+                                    btn[j].drawto(window);
+                                ArrowPointAt(i, window);
+                                window.display();
+                                sf::sleep(sf::seconds(1));
+                            }
+                        }
                         if (Y == -1) Answer.setString("Can't find " + X);
                         else Answer.setString(X + " at " + std::to_string(Y));
                     }

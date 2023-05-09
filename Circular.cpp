@@ -4,6 +4,7 @@
 #include"Buttons.h"
 #include"TextBox.h"
 #include"InputData.h"
+#include"Objects.h"
 
 Circular::Circular()
 {
@@ -486,9 +487,8 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
         window.clear(ScreenColor);
 
         btnHome.drawto(window);
-
+        PrintArrow(Example.GetSize(), window);
         Example.Print();
-        std::cout << Example.GetSize() << "\n";
 
         for (int i = 0; i < 10; i++)
             btn[i].drawto(window);

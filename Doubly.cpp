@@ -472,7 +472,7 @@ void DoublyClient(sf::Event Events, sf::RenderWindow& window)
         window.clear(ScreenColor);
 
         btnHome.drawto(window);
-        PrintDoubleArrow(Example.GetSize() - 1, window);
+        PrintDoubleArrow(Example.GetSize() - 1, 8, 8, window);
         Example.Print();
 
         for (int i = 0; i < 10; i++)

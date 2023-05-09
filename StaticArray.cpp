@@ -15,13 +15,13 @@ void Set(std::string X[], std::vector<std::string> Y, int& n)
 
 void AddFirst(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 {
-    PrintBox(n + 1, window);
+    PrintBox(7, window);
     Print(window, X, n, 8);
     window.display();
     for (int i = n; i >= 1; i--)
     {
         sf::sleep(sf::seconds(1));
-        PrintBox(n + 1, window);
+        PrintBox(7, window);
         Print(window, X, n, i - 1);
         window.display();
     }
@@ -34,13 +34,13 @@ void AddFirst(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 
 void AddMiddle(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 {
-    PrintBox(n + 1, window);
+    PrintBox(7, window);
     Print(window, X, n, 8);
     window.display();
     for (int i = n; i >= n/2; i--)
     {
         sf::sleep(sf::seconds(1));
-        PrintBox(n + 1, window);
+        PrintBox(7, window);
         Print(window, X, n, i - 1);
         window.display();
     }
@@ -53,7 +53,7 @@ void AddMiddle(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 
 void AddLast(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 {
-    PrintBox(n + 1, window);
+    PrintBox(7, window);
     Print(window, X, n, 8);
     sf::sleep(sf::seconds(1));
     X[n] = Y;
@@ -62,7 +62,7 @@ void AddLast(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
 
 void DeleteFirst(std::string X[], int& n, sf::RenderWindow& window)
 {
-    PrintBox(n, window);
+    PrintBox(7, window);
     Print(window, X, n, 8);
     window.display();
 
@@ -73,7 +73,7 @@ void DeleteFirst(std::string X[], int& n, sf::RenderWindow& window)
     for (int i = 0; i < n; i++)
     {
         sf::sleep(sf::seconds(1));
-        PrintBox(n + 1, window);
+        PrintBox(7, window);
         Print(window, X, n, i + 1);
         window.display();
     }
@@ -81,7 +81,7 @@ void DeleteFirst(std::string X[], int& n, sf::RenderWindow& window)
 
 void DeleteMiddle(std::string X[], int& n, sf::RenderWindow& window)
 {
-    PrintBox(n, window);
+    PrintBox(7, window);
     Print(window, X, n, 8);
     window.display();
 
@@ -92,7 +92,7 @@ void DeleteMiddle(std::string X[], int& n, sf::RenderWindow& window)
     for (int i = n/2; i < n; i++)
     {
         sf::sleep(sf::seconds(1));
-        PrintBox(n + 1, window);
+        PrintBox(7, window);
         Print(window, X, n, i + 1);
         window.display();
     }
@@ -363,6 +363,42 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 11, 11, Done);
                         if (Done != 0) break;
                         int Y = Search(Example, X, n);
+                        if (Y == -1)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                window.clear(ScreenColor);
+
+                                btnHome.drawto(window);
+
+                                PrintBox(7, window);
+                                Print(window, Example, n, 8);
+
+                                for (int j = 0; j < 11; j++)
+                                    btn[j].drawto(window);
+                                ArrowPointAt(i, window);
+                                window.display();
+                                sf::sleep(sf::seconds(1));
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i <= Y; i++)
+                            {
+                                window.clear(ScreenColor);
+
+                                btnHome.drawto(window);
+
+                                PrintBox(7, window);
+                                Print(window, Example, n, 8);
+
+                                for (int j = 0; j < 11; j++)
+                                    btn[j].drawto(window);
+                                ArrowPointAt(i, window);
+                                window.display();
+                                sf::sleep(sf::seconds(1));
+                            }
+                        }
                         if (Y == -1) Answer.setString("Can't find " + X);
                         else Answer.setString(X + " at " + std::to_string(Y));
                     }
@@ -415,7 +451,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
 
         btnHome.drawto(window);
 
-        PrintBox(n, window);
+        PrintBox(7, window);
         Print(window, Example, n, 8);
 
         for (int i = 0; i < 11; i++)

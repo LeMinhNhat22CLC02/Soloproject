@@ -107,7 +107,7 @@ void Queue::Set(std::vector<std::string> X)
         back->next = temp;
         back = temp;
     }
-    Size = X.size();
+    Size = (int)X.size();
 }
 
 int Queue::GetSize() 
@@ -172,14 +172,14 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
     sf::Text Head;
     Head.setFont(arial);
     Head.setCharacterSize(20);
-    Head.setString("Head");
+    Head.setString("Head/");
     Head.sf::Text::setFillColor(sf::Color::Cyan);
     Head.setStyle(sf::Text::Bold);
 
     sf::Text Tail;
     Tail.setFont(arial);
     Tail.setCharacterSize(20);
-    Tail.setString("Tail");
+    Tail.setString("Tail/");
     Tail.sf::Text::setFillColor(sf::Color::Cyan);
     Tail.setStyle(sf::Text::Bold);
 
@@ -229,7 +229,7 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 5, 3, Done);
                         if (Done != 0) break;
                         Add(Example, X, window);
-                        Head.setPosition({ (float)240 + std::max(0, Example.GetSize() - 2) * 150, 212.5 });
+                        Head.setPosition({ (float)240 + std::max(0, Example.GetSize() - 2) * 150, 372.5 });
                         Tail.setPosition({ 240, 372.5 });
                         window.draw(Head);
                         window.draw(Tail);
@@ -249,7 +249,7 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
                         window.clear(ScreenColor);
                         if (Example.GetSize() > 0)
                         {
-                            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 212.5 });
+                            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
                             Tail.setPosition({ 240, 372.5 });
                             window.draw(Head);
                             window.draw(Tail);
@@ -322,10 +322,20 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
 
         if (Example.GetSize() > 0)
         {
-            Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 212.5 });
-            Head.setPosition({ 240, 372.5 });
-            window.draw(Head);
-            window.draw(Tail);
+            if (Example.GetSize() == 1)
+            {
+                Head.setString("Head/Tail/");
+                Head.setPosition({ 225, 372.5 });
+                window.draw(Tail);
+            }
+            else
+            {
+                Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                Head.setPosition({ 240, 372.5 });
+                Head.setString("Head/");
+                window.draw(Head);
+                window.draw(Tail);
+            }
         }
 
         for (int i = 0; i < 5; i++)

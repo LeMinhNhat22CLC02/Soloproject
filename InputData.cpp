@@ -13,10 +13,10 @@ std::vector<std::string> Initialize()
     srand(time(NULL));
     std::vector<std::string> Temp;
 
-    Temp.push_back(std::to_string(rand() % 100) + (char)('a' + rand() % 26) + (char)('A' + rand() % 26));
-    Temp.push_back((char)('A' + rand() % 26) + std::to_string(rand() % 100) + (char)('a' + rand() % 26));
-    Temp.push_back(std::to_string(rand() % 100) + (char)('A' + rand() % 26) + (char)('a' + rand() % 26));
-    Temp.push_back((char)('a' + rand() % 26) + std::to_string(rand() % 100) + (char)('A' + rand() % 26));
+    Temp.push_back(std::to_string(rand() % 100));
+    Temp.push_back(std::to_string(rand() % 100));
+    Temp.push_back(std::to_string(rand() % 100));
+    Temp.push_back(std::to_string(rand() % 100));
 
     return Temp;
 }
