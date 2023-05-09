@@ -28,15 +28,15 @@ bool Stack::isFull()
 void Stack::Push(std::string X, sf::RenderWindow& window)
 {
     data.push_back(X);
-    PrintArrow(data.size() - 2, window);
-    PrintBox(data.size(), window);
+    PrintArrow((int)data.size() - 2, window);
+    PrintBox((int)data.size(), window);
     Print(window);
 }
 
 void Stack::Pop(sf::RenderWindow& window)
 {
-    PrintArrow(data.size() - 2, window);
-    PrintBox(data.size(), window);
+    PrintArrow((int)data.size() - 2, window);
+    PrintBox((int)data.size(), window);
     Print(window);
     data.pop_back();
 }
@@ -46,8 +46,6 @@ void Stack::Print(sf::RenderWindow& window)
     sf::Font arial;
     arial.loadFromFile("arial.ttf");
 
-    sf::Color OutColor(241, 70, 102);
-    sf::Color BoxColor(255, 220, 195);
     sf::Color TextColor(64, 140, 124);
 
     sf::Text Data;
@@ -56,19 +54,10 @@ void Stack::Print(sf::RenderWindow& window)
     Data.sf::Text::setFillColor(TextColor);
     Data.setStyle(sf::Text::Bold);
 
-    sf::CircleShape Box(50.f);
-    Box.setFillColor(BoxColor);
-    Box.setFillColor(BoxColor);
-    Box.setOutlineThickness(3);
-    Box.setOutlineColor(OutColor);
-
     for (int i = 0; i < (int)data.size(); i++)
     {
         Data.setString(data[i]);
         Data.setPosition({ (float)240 + i * (150), 292.5 });
-        Box.setPosition({ (float)225 + i * (150), 250 });
-
-        window.draw(Box);
         window.draw(Data);
     }
 }
@@ -279,6 +268,7 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
         window.clear(ScreenColor);
 
         btnHome.drawto(window);
+        PrintBox(Example.GetSize(), window);
         PrintArrow(Example.GetSize() - 1, window);
         Example.Print(window);
 

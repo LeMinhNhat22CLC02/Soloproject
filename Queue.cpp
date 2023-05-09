@@ -4,6 +4,7 @@
 #include"Buttons.h"
 #include"TextBox.h"
 #include"InputData.h"
+#include"Objects.h"
 
 Queue::Queue()
 {
@@ -22,7 +23,7 @@ Queue::~Queue()
     }
 }
 
-void Queue::Add(std::string data)
+void Queue::Add(std::string data, sf::RenderWindow& window)
 {
     Node* temp = new Node;
     temp->data = data;
@@ -39,10 +40,16 @@ void Queue::Add(std::string data)
         back = temp;
     }
     Size++;
+    PrintArrow(Size - 2, window);
+    PrintBox(Size, window);
+    Print(window);
 }
 
-void Queue::Remove()
+void Queue::Remove(sf::RenderWindow& window)
 {
+    PrintArrow(Size - 2, window);
+    PrintBox(Size, window);
+    Print(window);
     std::string data = front->data;
     Node* temp = front;
     front = front->next;
@@ -61,25 +68,46 @@ bool Queue::isEmpty()
     return front == nullptr;
 }
 
-void Queue::Print()
+void Queue::Print(sf::RenderWindow& window)
 {
-    Node* current = front;
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
 
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Data;
+    Data.setFont(arial);
+    Data.setCharacterSize(15);
+    Data.sf::Text::setFillColor(TextColor);
+    Data.setStyle(sf::Text::Bold);
+
+    Node* current = front;
+    int i = 0;
     while (current != nullptr)
     {
-        std::cout << current->data << " ";
+        Data.setString(current->data);
+        Data.setPosition({ (float)240 + i * (150), 292.5 });
+        window.draw(Data);
         current = current->next;
+        i++;
     }
-    std::cout << std::endl;
-    return;
 }
-
 void Queue::Set(std::vector<std::string> X)
 {
-    front = nullptr;
-    back = nullptr;
-    for (int i = 0; i < X.size(); i++)
-        Add(X[i]);
+    Node* temp = new Node;
+    temp->data = X[0];
+    temp->next = nullptr;
+    front = temp;
+    back = temp;
+    for (int i = 1; i < X.size(); i++)
+    {
+        temp = new Node;
+        temp->data = X[i];
+        temp->next = nullptr;
+        back->next = temp;
+        back = temp;
+    }
+    Size = X.size();
 }
 
 int Queue::GetSize() 
@@ -92,14 +120,14 @@ void Set(Queue& X, std::vector<std::string> Y)
     X.Set(Y);
 }
 
-void Add(Queue& X, std::string Y)
+void Add(Queue& X, std::string Y, sf::RenderWindow& window)
 {
-    X.Add(Y);
+    X.Add(Y, window);
 }
 
-void Remove(Queue& X)
+void Remove(Queue& X, sf::RenderWindow& window)
 {
-    X.Remove();
+    X.Remove(window);
 }
 
 void QueueClient(sf::Event Events, sf::RenderWindow& window)
@@ -140,6 +168,20 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
     Warnings2.sf::Text::setFillColor(sf::Color::Cyan);
     Warnings2.setPosition({ 500, 50 });
     Warnings2.setStyle(sf::Text::Bold);
+    
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setString("Head");
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
+    Tail.setString("Tail");
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
 
     Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
@@ -186,7 +228,13 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 5, 3, Done);
                         if (Done != 0) break;
-                        Add(Example, X);
+                        Add(Example, X, window);
+                        Head.setPosition({ (float)240 + std::max(0, Example.GetSize() - 2) * 150, 212.5 });
+                        Tail.setPosition({ 240, 372.5 });
+                        window.draw(Head);
+                        window.draw(Tail);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
                     }
                     break;
 
@@ -198,7 +246,20 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
-                        Remove(Example);
+                        window.clear(ScreenColor);
+                        if (Example.GetSize() > 0)
+                        {
+                            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 212.5 });
+                            Tail.setPosition({ 240, 372.5 });
+                            window.draw(Head);
+                            window.draw(Tail);
+                        }
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 5; i++)
+                            btn[i].drawto(window);
+                        Remove(Example, window);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
                         Type = 0;
                         Done = 0;
                     }
@@ -255,8 +316,17 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
         window.clear(ScreenColor);
 
         btnHome.drawto(window);
+        PrintArrow(Example.GetSize() - 1, window);
+        PrintBox(Example.GetSize(), window);
+        Example.Print(window);
 
-        Example.Print();
+        if (Example.GetSize() > 0)
+        {
+            Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 212.5 });
+            Head.setPosition({ 240, 372.5 });
+            window.draw(Head);
+            window.draw(Tail);
+        }
 
         for (int i = 0; i < 5; i++)
             btn[i].drawto(window);
