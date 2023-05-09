@@ -131,7 +131,57 @@ void ArrowPointAt(int Num, sf::RenderWindow& window)
     window.draw(line, 2, sf::Lines);
 }
 
+void ArrowPoint(int Num, sf::RenderWindow& window)
+{
+    if (Num < 1) return;
+
+    sf::VertexArray triangle(sf::Triangles, 3);
+    triangle[0].position = sf::Vector2f((float)235 + Num * 150, 180);
+    triangle[1].position = sf::Vector2f((float)235 + Num * 150, 209);
+    triangle[2].position = sf::Vector2f((float)206 + Num * 150, 180);
+
+    triangle[0].color = sf::Color::White;
+    triangle[1].color = sf::Color::White;
+    triangle[2].color = sf::Color::White;
+
+    sf::Vertex line[] =
+    {
+        sf::Vertex(sf::Vector2f((float)221 + Num * 150, 194)),
+        sf::Vertex(sf::Vector2f((float)175 + Num * 150, 240))
+    };
+    line[0].color = sf::Color::White;
+    line[1].color = sf::Color::White;
+
+    window.draw(line, 2, sf::Lines);
+    window.draw(triangle);
+}
+
 void PrintBox(int Num, sf::RenderWindow& window)
+{
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+
+    sf::VertexArray triangle(sf::Triangles, 3);
+    triangle[0].position = sf::Vector2f((float)229 + Num * 150, 220);
+    triangle[1].position = sf::Vector2f((float)229 + Num * 150, 220);
+    triangle[2].position = sf::Vector2f((float)211 + Num * 150, 240);
+    triangle[0].color = sf::Color::White;
+    triangle[1].color = sf::Color::White;
+    triangle[2].color = sf::Color::White;
+    sf::CircleShape Box(50.f);
+    Box.setFillColor(BoxColor);
+    Box.setFillColor(BoxColor);
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+
+    for (int i = 0; i < Num; i++)
+    {
+        Box.setPosition({ (float)225 + i * 150, 250 });
+        window.draw(Box);
+    }
+}
+
+void PrintBox(int Num, int Except, sf::RenderWindow& window)
 {
     sf::Color OutColor(241, 70, 102);
     sf::Color BoxColor(255, 220, 195);
@@ -143,6 +193,7 @@ void PrintBox(int Num, sf::RenderWindow& window)
     Box.setOutlineColor(OutColor);
 
     for (int i = 0; i < Num; i++)
+    if (i != Except)
     {
         Box.setPosition({ (float)225 + i * 150, 250 });
         window.draw(Box);

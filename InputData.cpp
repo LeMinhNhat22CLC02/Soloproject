@@ -10,7 +10,7 @@
 
 std::vector<std::string> Initialize()
 {
-    srand(time(NULL));
+    srand((int)time(NULL));
     std::vector<std::string> Temp;
 
     Temp.push_back(std::to_string(rand() % 100));
@@ -83,7 +83,7 @@ std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], in
     Box.setOutlineThickness(3);
     Box.setOutlineColor(OutColor);
 
-    Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
 
@@ -197,7 +197,7 @@ int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nb
     Box.setOutlineColor(OutColor);
     Box.setPosition(btn[X].getPosition());
 
-    Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
 
@@ -320,7 +320,7 @@ int GetSize(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, 
     Box.setOutlineColor(OutColor);
     Box.setPosition(btn[X].getPosition());
 
-    Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
 

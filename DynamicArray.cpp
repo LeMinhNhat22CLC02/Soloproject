@@ -298,7 +298,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
     Answer.setPosition({ 500, 50 });
     Answer.setStyle(sf::Text::Bold);
 
-    Button btnHome("Home", { 100, 100 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
 
