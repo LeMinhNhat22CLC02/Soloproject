@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include"Buttons.h"
 
 class Singly {
 public:
@@ -20,6 +21,10 @@ public:
     bool isFull();
     bool isEmpty();
     void Print(sf::RenderWindow& window, int Nprint);
+    void ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X, int Choosen);
+    void ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X);
+    void BeforeDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen);
+    void AfterDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen);
 private:
 	struct Node
 	{

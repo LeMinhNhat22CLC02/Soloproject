@@ -486,6 +486,7 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
 
         window.clear(ScreenColor);
 
+        LongArrow(Example.GetSize() - 1, window);
         btnHome.drawto(window);
         PrintArrow(Example.GetSize(), window);
         Example.Print();
