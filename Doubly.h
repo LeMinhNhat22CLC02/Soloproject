@@ -2,13 +2,14 @@
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include"Buttons.h"
 
 class Doubly {
 public:
     Doubly();
     ~Doubly();
     int GetSize();
-    void Print();
+    void Print(sf::RenderWindow& window, int Nprint);
     bool isFull();
     bool isEmpty();
     void AddFirst(std::string val);
@@ -19,7 +20,11 @@ public:
     void DeleteMiddle();
     void Set(std::vector<std::string> X);
     void Update(std::string X, int Y);
-    void Search(std::string X);
+    int Search(std::string X);
+    void ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X, int Choosen);
+    void ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X);
+    void BeforeDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen);
+    void AfterDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen);
 private:
     class Node {
     public:
@@ -34,8 +39,6 @@ private:
 };
 
 void Set(Doubly& X, std::vector<std::string> Y);
-void Add(Doubly& X, std::string Y, int Z);
-void Delete(Doubly& X, int Y);
 void AddFirst(Doubly& X, std::string Y);
 void AddLast(Doubly& X, std::string Y);
 void AddMiddle(Doubly& X, std::string Y);
@@ -43,5 +46,5 @@ void DeleteFirst(Doubly& X);
 void DeleteLast(Doubly& X);
 void DeleteMiddle(Doubly& X);
 void Update(Doubly& X, std::string Y, int Z);
-void Search(Doubly& X, std::string Y);
+int Search(Doubly& X, std::string Y);
 void DoublyClient(sf::Event Events, sf::RenderWindow& window);

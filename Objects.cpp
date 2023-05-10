@@ -55,7 +55,7 @@ void PrintArrow(int Num, int except1, int except2, sf::RenderWindow& window) {
     }
 }
 
-void PrintDoubleArrow(int Num, int except1, int except2, sf::RenderWindow& window)
+void PrintDoubleArrow(int Num, sf::RenderWindow& window)
 {
     if (Num < 1) return;
     sf::VertexArray triangle1(sf::Triangles, 3);
@@ -85,7 +85,6 @@ void PrintDoubleArrow(int Num, int except1, int except2, sf::RenderWindow& windo
     line2[1].color = sf::Color::White;
     
     for (int i = 0; i < Num; i++)
-    if (i != except1 && i != except2)
     {
         triangle1[0].position = sf::Vector2f((float)360 + i * 150, 320);
         triangle1[1].position = sf::Vector2f((float)360 + i * 150, 300);
@@ -107,6 +106,60 @@ void PrintDoubleArrow(int Num, int except1, int except2, sf::RenderWindow& windo
         window.draw(line1, 2, sf::Lines);
         window.draw(line2, 2, sf::Lines);
     }
+}
+
+void PrintDoubleArrow(int Num, int except1, int except2, sf::RenderWindow& window)
+{
+    if (Num < 1) return;
+    sf::VertexArray triangle1(sf::Triangles, 3);
+    triangle1[0].color = sf::Color::White;
+    triangle1[1].color = sf::Color::White;
+    triangle1[2].color = sf::Color::White;
+
+    sf::VertexArray triangle2(sf::Triangles, 3);
+    triangle2[0].color = sf::Color::White;
+    triangle2[1].color = sf::Color::White;
+    triangle2[2].color = sf::Color::White;
+
+    sf::Vertex line1[] =
+    {
+        sf::Vertex(sf::Vector2f(340, 310)),
+        sf::Vertex(sf::Vector2f(360, 310))
+    };
+    line1[0].color = sf::Color::White;
+    line1[1].color = sf::Color::White;
+
+    sf::Vertex line2[] =
+    {
+        sf::Vertex(sf::Vector2f(340, 290)),
+        sf::Vertex(sf::Vector2f(360, 290))
+    };
+    line2[0].color = sf::Color::White;
+    line2[1].color = sf::Color::White;
+
+    for (int i = 0; i < Num; i++)
+        if (i != except1 && i != except2)
+        {
+            triangle1[0].position = sf::Vector2f((float)360 + i * 150, 320);
+            triangle1[1].position = sf::Vector2f((float)360 + i * 150, 300);
+            triangle1[2].position = sf::Vector2f((float)370 + i * 150, 310);
+
+            triangle2[0].position = sf::Vector2f((float)340 + i * 150, 300);
+            triangle2[1].position = sf::Vector2f((float)340 + i * 150, 280);
+            triangle2[2].position = sf::Vector2f((float)330 + i * 150, 290);
+
+            window.draw(triangle1);
+            window.draw(triangle2);
+
+            line1[0] = sf::Vertex(sf::Vector2f((float)340 + i * 150, 310));
+            line1[1] = sf::Vertex(sf::Vector2f((float)360 + i * 150, 310));
+
+            line2[0] = sf::Vertex(sf::Vector2f((float)340 + i * 150, 290));
+            line2[1] = sf::Vertex(sf::Vector2f((float)360 + i * 150, 290));
+
+            window.draw(line1, 2, sf::Lines);
+            window.draw(line2, 2, sf::Lines);
+        }
 }
 
 void ArrowPointAt(int Num, sf::RenderWindow& window)
@@ -178,6 +231,68 @@ void ArrowPoint(int Num, sf::RenderWindow& window)
     window.draw(triangle);
 }
 
+void DoubleArrowPointAt(int Num, sf::RenderWindow& window)
+{
+    sf::VertexArray triangle1(sf::Triangles, 3);
+    triangle1[0].position = sf::Vector2f((float)275 + Num * 150, 230);
+    triangle1[1].position = sf::Vector2f((float)295 + Num * 150, 230);
+    triangle1[2].position = sf::Vector2f((float)285 + Num * 150, 240);
+    triangle1[0].color = sf::Color::White;
+    triangle1[1].color = sf::Color::White;
+    triangle1[2].color = sf::Color::White;
+
+    sf::Vertex line1[] =
+    {
+        sf::Vertex(sf::Vector2f((float)285 + Num * 150, 180)),
+        sf::Vertex(sf::Vector2f((float)285 + Num * 150, 230))
+    };
+    line1[0].color = sf::Color::White;
+    line1[1].color = sf::Color::White;
+
+    sf::VertexArray triangle2(sf::Triangles, 3);
+    triangle2[0].position = sf::Vector2f((float)255 + Num * 150, 190);
+    triangle2[1].position = sf::Vector2f((float)275 + Num * 150, 190);
+    triangle2[2].position = sf::Vector2f((float)265 + Num * 150, 180);
+    triangle2[0].color = sf::Color::White;
+    triangle2[1].color = sf::Color::White;
+    triangle2[2].color = sf::Color::White;
+
+    sf::Vertex line2[] =
+    {
+        sf::Vertex(sf::Vector2f((float)265 + Num * 150, 190)),
+        sf::Vertex(sf::Vector2f((float)265 + Num * 150, 240))
+    };
+    line2[0].color = sf::Color::White;
+    line2[1].color = sf::Color::White;
+
+    window.draw(triangle1);
+    window.draw(triangle2);
+    window.draw(line1, 2, sf::Lines);
+    window.draw(line2, 2, sf::Lines);
+}
+
+void Arrow(int Num, sf::RenderWindow& window)
+{
+    sf::VertexArray triangle(sf::Triangles, 3);
+    triangle[0].position = sf::Vector2f((float)350 + Num * 150, 320);
+    triangle[1].position = sf::Vector2f((float)350 + Num * 150, 280);
+    triangle[2].position = sf::Vector2f((float)370 + Num * 150, 300);
+    triangle[0].color = sf::Color::White;
+    triangle[1].color = sf::Color::White;
+    triangle[2].color = sf::Color::White;
+
+    sf::Vertex line[] =
+    {
+        sf::Vertex(sf::Vector2f((float)330 + Num * 150, 300)),
+        sf::Vertex(sf::Vector2f((float)350 + Num * 150, 300))
+    };
+    line[0].color = sf::Color::White;
+    line[1].color = sf::Color::White;
+
+    window.draw(triangle);
+    window.draw(line, 2, sf::Lines);
+}
+
 void PrintBox(int Num, sf::RenderWindow& window)
 {
     sf::Color OutColor(241, 70, 102);
@@ -228,7 +343,7 @@ void LongArrow(int Begin, int Num, sf::RenderWindow& window)
 
     sf::Vertex line[] =
     {
-        sf::Vertex(sf::Vector2f(350 + Begin * 150, 385)),
+        sf::Vertex(sf::Vector2f((float)350 + Begin * 150, 385)),
         sf::Vertex(sf::Vector2f((float)220 + (Num + Begin) * 150, 385))
     };
     line[0].color = sf::Color::White;
