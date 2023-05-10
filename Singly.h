@@ -9,12 +9,12 @@ public:
     Singly();
     ~Singly();
     void Set(std::vector<std::string> X);
-    void AddFirst(std::string X, sf::RenderWindow& window);
-    void AddLast(std::string X, sf::RenderWindow& window);
-    void AddMiddle(std::string X, sf::RenderWindow& window);
-    void DeleteFirst(sf::RenderWindow& window);
-    void DeleteLast(sf::RenderWindow& window);
-    void DeleteMiddle(sf::RenderWindow& window);
+    void AddFirst(std::string X);
+    void AddLast(std::string X);
+    void AddMiddle(std::string X);
+    void DeleteFirst();
+    void DeleteLast();
+    void DeleteMiddle();
     void Update(std::string X, int Location);
     int Search(std::string X);
     int GetSize();
@@ -36,12 +36,12 @@ private:
 };
 
 void Set(Singly& X, std::vector<std::string> Y);
-void AddFirst(Singly& X, std::string Y, sf::RenderWindow& window);
-void AddLast(Singly& X, std::string Y, sf::RenderWindow& window);
-void AddMiddle(Singly& X, std::string Y, sf::RenderWindow& window);
-void DeleteFirst(Singly& X, sf::RenderWindow& window);
-void DeleteLast(Singly& X, sf::RenderWindow& window);
-void DeleteMiddle(Singly& X, sf::RenderWindow& window);
+void AddFirst(Singly& X, std::string Y);
+void AddLast(Singly& X, std::string Y);
+void AddMiddle(Singly& X, std::string Y);
+void DeleteFirst(Singly& X);
+void DeleteLast(Singly& X);
+void DeleteMiddle(Singly& X);
 void Update(Singly& X, std::string Y, int Z);
 int Search(Singly& X, std::string Y);
 void SinglyClient(sf::Event Events, sf::RenderWindow& window);

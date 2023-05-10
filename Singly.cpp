@@ -33,7 +33,7 @@ void Singly::Set(std::vector<std::string> X)
     current->next = nullptr;
 }
 
-void Singly::AddFirst(std::string X, sf::RenderWindow& window)
+void Singly::AddFirst(std::string X)
 {
     Node* temp = new Node;
     temp->data = X;
@@ -42,11 +42,11 @@ void Singly::AddFirst(std::string X, sf::RenderWindow& window)
     size++;
 }
 
-void Singly::AddLast(std::string X, sf::RenderWindow& window)
+void Singly::AddLast(std::string X)
 {
     if (size == 0)
     {
-        AddFirst(X, window);
+        AddFirst(X);
         return;
     }
     Node* temp = head;
@@ -62,16 +62,16 @@ void Singly::AddLast(std::string X, sf::RenderWindow& window)
     size++;
 }
 
-void Singly::AddMiddle(std::string X, sf::RenderWindow& window)
+void Singly::AddMiddle(std::string X)
 {
     if (size == 0)
     {
-        AddFirst(X, window);
+        AddFirst(X);
         return;
     }
     if (size == 1)
     {
-        AddLast(X, window);
+        AddLast(X);
         return;
     }
     Node* temp = head;
@@ -87,17 +87,17 @@ void Singly::AddMiddle(std::string X, sf::RenderWindow& window)
     size++;
 }
 
-void Singly::DeleteFirst(sf::RenderWindow& window)
+void Singly::DeleteFirst()
 {
     head = head->next;
     size--;
 }
 
-void Singly::DeleteLast(sf::RenderWindow& window)
+void Singly::DeleteLast()
 {
     if (size == 1)
     {
-        DeleteFirst(window);
+        DeleteFirst();
         return;
     }
     int Location = size - 2;
@@ -112,11 +112,11 @@ void Singly::DeleteLast(sf::RenderWindow& window)
     size--;
 }
 
-void Singly::DeleteMiddle(sf::RenderWindow& window)
+void Singly::DeleteMiddle()
 {
     if (size == 1)
     {
-        DeleteFirst(window);
+        DeleteFirst();
         return;
     }
     int Location = size / 2 - 1;
@@ -225,19 +225,19 @@ void Singly::ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, s
     Box.setOutlineColor(OutColor);
     Box.setPosition({(float) 225 + Choosen * 150, 70 });
 
-    sf::Text Head;
-    Head.setFont(arial);
-    Head.setCharacterSize(20);
-    Head.setString("Head/");
-    Head.sf::Text::setFillColor(sf::Color::Cyan);
-    Head.setStyle(sf::Text::Bold);
-
     sf::Text Tail;
     Tail.setFont(arial);
     Tail.setCharacterSize(20);
-    Tail.setPosition({ 240, 372.5 });
+    Tail.setString("Tail/");
     Tail.sf::Text::setFillColor(sf::Color::Cyan);
     Tail.setStyle(sf::Text::Bold);
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
 
     window.clear(ScreenColor);
 
@@ -249,15 +249,15 @@ void Singly::ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, s
     Print(window, 8);
     if (size == 1)
     {
-        Tail.setString("Tail/Head/");
-        Tail.setPosition({ 225, 372.5 });
-        window.draw(Tail);
+        Head.setString("Head/Tail/");
+        Head.setPosition({ 225, 372.5 });
+        window.draw(Head);
     }
     else
     {
-        Head.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
-        Tail.setPosition({ 240, 372.5 });
-        Tail.setString("Tail/");
+        Tail.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
+        Head.setPosition({ 240, 372.5 });
+        Head.setString("Head/");
         window.draw(Head);
         window.draw(Tail);
     }
@@ -273,8 +273,8 @@ void Singly::ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, s
     PrintArrow(size - 1, window);
     PrintBox(size, window);
     Print(window, 8);
-    if (size != 1) window.draw(Head);
-    window.draw(Tail);
+    if (size != 1) window.draw(Tail);
+    window.draw(Head);
     window.draw(Box);
     window.draw(Data);
 
@@ -291,8 +291,8 @@ void Singly::ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, s
     Print(window, 8);
     ArrowPointAt(Choosen, window);
     if (Choosen != 0) ArrowPoint(Choosen, window);
-    if (size > 1) window.draw(Head);
-    window.draw(Tail);
+    if (size > 1) window.draw(Tail);
+    window.draw(Head);
     window.draw(Box);
     window.draw(Data);
 
@@ -326,19 +326,19 @@ void Singly::ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btn
     Box.setOutlineColor(OutColor);
     Box.setPosition({ (float)75 + size * 150, 70 });
 
-    sf::Text Head;
-    Head.setFont(arial);
-    Head.setCharacterSize(20);
-    Head.setString("Head/");
-    Head.sf::Text::setFillColor(sf::Color::Cyan);
-    Head.setStyle(sf::Text::Bold);
-
     sf::Text Tail;
     Tail.setFont(arial);
     Tail.setCharacterSize(20);
-    Tail.setPosition({ 240, 372.5 });
+    Tail.setString("Tail/");
     Tail.sf::Text::setFillColor(sf::Color::Cyan);
     Tail.setStyle(sf::Text::Bold);
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
 
     window.clear(ScreenColor);
 
@@ -350,15 +350,15 @@ void Singly::ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btn
     Print(window, 8);
     if (size == 1)
     {
-        Tail.setString("Tail/Head/");
-        Tail.setPosition({ 225, 372.5 });
-        window.draw(Tail);
+        Head.setString("Head/Tail/");
+        Head.setPosition({ 225, 372.5 });
+        window.draw(Head);
     }
     else
     {
-        Head.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
-        Tail.setPosition({ 240, 372.5 });
-        Tail.setString("Tail/");
+        Tail.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
+        Head.setPosition({ 240, 372.5 });
+        Head.setString("Head/");
         window.draw(Head);
         window.draw(Tail);
     }
@@ -374,8 +374,8 @@ void Singly::ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btn
     PrintArrow(size - 1, window);
     PrintBox(size, window);
     Print(window, 8);
-    if (size != 1) window.draw(Head);
-    window.draw(Tail);
+    if (size != 1) window.draw(Tail);
+    window.draw(Head);
     window.draw(Box);
     window.draw(Data);
 
@@ -391,8 +391,8 @@ void Singly::ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btn
     PrintBox(size, window);
     Print(window, 8);
     ArrowPointUpAt(size - 1, window);
-    if (size > 1) window.draw(Head);
-    window.draw(Tail);
+    if (size > 1) window.draw(Tail);
+    window.draw(Head);
     window.draw(Box);
     window.draw(Data);
 
@@ -407,12 +407,12 @@ void Singly::BeforeDelete(sf::RenderWindow& window, Button btn[], Button btnHome
     sf::Font arial;
     arial.loadFromFile("arial.ttf");
 
-    sf::Text Tail;
-    Tail.setFont(arial);
-    Tail.setCharacterSize(20);
-    Tail.setPosition({ 240, 372.5 });
-    Tail.sf::Text::setFillColor(sf::Color::Cyan);
-    Tail.setStyle(sf::Text::Bold);
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
 
     PrintBox(size, window);
     PrintArrow(size - 1, Choosen, Choosen - 1, window);
@@ -424,22 +424,22 @@ void Singly::BeforeDelete(sf::RenderWindow& window, Button btn[], Button btnHome
 
     if (size == 1)
     {
-        Tail.setString("Tail/Head/");
-        Tail.setPosition({ 225, 372.5 });
-        window.draw(Tail);
+        Head.setString("Head/Tail/");
+        Head.setPosition({ 225, 372.5 });
+        window.draw(Head);
     }
     else
     {
-        sf::Text Head;
-        Head.setFont(arial);
-        Head.setCharacterSize(20);
-        Head.setString("Head/");
-        Head.sf::Text::setFillColor(sf::Color::Cyan);
-        Head.setStyle(sf::Text::Bold);
-        Head.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
-
-        Tail.setPosition({ 240, 372.5 });
+        sf::Text Tail;
+        Tail.setFont(arial);
+        Tail.setCharacterSize(20);
         Tail.setString("Tail/");
+        Tail.sf::Text::setFillColor(sf::Color::Cyan);
+        Tail.setStyle(sf::Text::Bold);
+        Tail.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
+
+        Head.setPosition({ 240, 372.5 });
+        Head.setString("Head/");
         window.draw(Head);
         window.draw(Tail);
     }
@@ -454,20 +454,20 @@ void Singly::AfterDelete(sf::RenderWindow& window, Button btn[], Button btnHome,
     sf::Font arial;
     arial.loadFromFile("arial.ttf");
 
-    sf::Text Tail;
-    Tail.setFont(arial);
-    Tail.setCharacterSize(20);
-    Tail.setPosition({ 240, 372.5 });
-    Tail.sf::Text::setFillColor(sf::Color::Cyan);
-    Tail.setStyle(sf::Text::Bold);
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
 
     if (size == 1)
     {
         btnHome.drawto(window);
 
-        Tail.setString("Tail/Head/");
-        Tail.setPosition({(float)375 - Choosen * 150, 372.5 });
-        window.draw(Tail);
+        Head.setString("Head/Tail/");
+        Head.setPosition({(float)375 - Choosen * 150, 372.5 });
+        window.draw(Head);
 
         PrintBox(2, Choosen, window);
         Print(window, Choosen);
@@ -485,15 +485,15 @@ void Singly::AfterDelete(sf::RenderWindow& window, Button btn[], Button btnHome,
     else PrintArrow(size, Choosen, 8, window);
     Print(window, Choosen);
 
-    sf::Text Head;
-    Head.setFont(arial);
-    Head.setCharacterSize(20);
-    Head.setString("Head/");
-    Head.sf::Text::setFillColor(sf::Color::Cyan);
-    Head.setStyle(sf::Text::Bold);
-    Head.setPosition({ (float)240 + size * 150, 372.5 });
-    Tail.setPosition({ (float)240 + (Choosen == 0) * 150, 372.5});
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
     Tail.setString("Tail/");
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
+    Tail.setPosition({ (float)240 + size * 150, 372.5 });
+    Head.setPosition({ (float)240 + (Choosen == 0) * 150, 372.5});
+    Head.setString("Head/");
     window.draw(Head);
     window.draw(Tail);
 
@@ -510,34 +510,34 @@ void Set(Singly& X, std::vector<std::string> Y)
     X.Set(Y);
 }
 
-void AddFirst(Singly& X, std::string Y, sf::RenderWindow& window)
+void AddFirst(Singly& X, std::string Y)
 {
-    X.AddFirst(Y, window);
+    X.AddFirst(Y);
 }
 
-void AddLast(Singly& X, std::string Y, sf::RenderWindow& window)
+void AddLast(Singly& X, std::string Y)
 {
-    X.AddLast(Y, window);
+    X.AddLast(Y);
 }
 
-void AddMiddle(Singly& X, std::string Y, sf::RenderWindow& window)
+void AddMiddle(Singly& X, std::string Y)
 {
-    X.AddMiddle(Y, window);
+    X.AddMiddle(Y);
 }
 
-void DeleteFirst(Singly& X, sf::RenderWindow& window)
+void DeleteFirst(Singly& X)
 {
-    X.DeleteFirst(window);
+    X.DeleteFirst();
 }
 
-void DeleteLast(Singly& X, sf::RenderWindow& window)
+void DeleteLast(Singly& X)
 {
-    X.DeleteLast(window);
+    X.DeleteLast();
 }
 
-void DeleteMiddle(Singly& X, sf::RenderWindow& window)
+void DeleteMiddle(Singly& X)
 {
-    X.DeleteMiddle(window);
+    X.DeleteMiddle();
 }
 
 void Update(Singly& X, std::string Y, int Z)
@@ -594,19 +594,19 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
     Warnings2.setPosition({ 500, 50 });
     Warnings2.setStyle(sf::Text::Bold);
 
-    sf::Text Head;
-    Head.setFont(arial);
-    Head.setCharacterSize(20);
-    Head.setString("Head/");
-    Head.sf::Text::setFillColor(sf::Color::Cyan);
-    Head.setStyle(sf::Text::Bold);
-
     sf::Text Tail;
     Tail.setFont(arial);
     Tail.setCharacterSize(20);
-    Tail.setPosition({ 240, 372.5 });
+    Tail.setString("Tail/");
     Tail.sf::Text::setFillColor(sf::Color::Cyan);
     Tail.setStyle(sf::Text::Bold);
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
     
     sf::Text Answer;
     Answer.setFont(arial);
@@ -662,7 +662,7 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 10, 3, Done);
                         if (Done != 0) break;
                         Example.ScreenAdd(window, btn, btnHome, X, 0);
-                        AddFirst(Example, X, window);
+                        AddFirst(Example, X);
                     }
                     break;
 
@@ -679,7 +679,7 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 10, 4, Done);
                         if (Done != 0) break;
                         Example.ScreenAddForLast(window, btn, btnHome, X);
-                        AddLast(Example, X, window);
+                        AddLast(Example, X);
                     }
                     break;
 
@@ -696,7 +696,7 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 10, 5, Done);
                         if (Done != 0) break;
                         Example.ScreenAdd(window, btn, btnHome, X, Example.GetSize() / 2);
-                        AddMiddle(Example, X, window);
+                        AddMiddle(Example, X);
                     }
                     break;
 
@@ -712,7 +712,7 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                         Type = 0;
                         window.clear(ScreenColor);
                         Example.BeforeDelete(window, btn, btnHome, 0);
-                        DeleteFirst(Example, window);
+                        DeleteFirst(Example);
                         window.clear(ScreenColor);
                         Example.AfterDelete(window, btn, btnHome, 0);
                     }
@@ -730,7 +730,7 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                         Type = 0;
                         window.clear(ScreenColor);
                         Example.BeforeDelete(window, btn, btnHome, Example.GetSize() - 1);
-                        DeleteLast(Example, window);
+                        DeleteLast(Example);
                     }
                     break;
 
@@ -746,7 +746,7 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                         Type = 0;
                         window.clear(ScreenColor);
                         Example.BeforeDelete(window, btn, btnHome, Example.GetSize() / 2);
-                        DeleteMiddle(Example, window);
+                        DeleteMiddle(Example);
                         window.clear(ScreenColor);
                         Example.AfterDelete(window, btn, btnHome, (Example.GetSize() + 1) / 2);
                     }
@@ -781,15 +781,15 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                             {
                                 if (Example.GetSize() == 1)
                                 {
-                                    Tail.setString("Tail/Head/");
-                                    Tail.setPosition({ 225, 372.5 });
-                                    window.draw(Tail);
+                                    Head.setString("Head/Tail/");
+                                    Head.setPosition({ 225, 372.5 });
+                                    window.draw(Head);
                                 }
                                 else
                                 {
-                                    Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
-                                    Tail.setPosition({ 240, 372.5 });
-                                    Tail.setString("Tail/");
+                                    Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                    Head.setPosition({ 240, 372.5 });
+                                    Head.setString("Head/");
                                     window.draw(Head);
                                     window.draw(Tail);
                                 }
@@ -834,15 +834,15 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                                 {
                                     if (Example.GetSize() == 1)
                                     {
-                                        Tail.setString("Tail/Head/");
-                                        Tail.setPosition({ 225, 372.5 });
-                                        window.draw(Tail);
+                                        Head.setString("Head/Tail/");
+                                        Head.setPosition({ 225, 372.5 });
+                                        window.draw(Head);
                                     }
                                     else
                                     {
-                                        Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
-                                        Tail.setPosition({ 240, 372.5 });
-                                        Tail.setString("Tail/");
+                                        Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                        Head.setPosition({ 240, 372.5 });
+                                        Head.setString("Head/");
                                         window.draw(Head);
                                         window.draw(Tail);
                                     }
@@ -871,15 +871,15 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
                                 {
                                     if (Example.GetSize() == 1)
                                     {
-                                        Tail.setString("Tail/Head/");
-                                        Tail.setPosition({ 225, 372.5 });
-                                        window.draw(Tail);
+                                        Head.setString("Head/Tail/");
+                                        Head.setPosition({ 225, 372.5 });
+                                        window.draw(Head);
                                     }
                                     else
                                     {
-                                        Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
-                                        Tail.setPosition({ 240, 372.5 });
-                                        Tail.setString("Tail/");
+                                        Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                        Head.setPosition({ 240, 372.5 });
+                                        Head.setString("Head/");
                                         window.draw(Head);
                                         window.draw(Tail);
                                     }
@@ -953,15 +953,15 @@ void SinglyClient(sf::Event Events, sf::RenderWindow& window)
         {
             if (Example.GetSize() == 1)
             {
-                Tail.setString("Tail/Head/");
-                Tail.setPosition({ 225, 372.5 });
-                window.draw(Tail);
+                Head.setString("Head/Tail/");
+                Head.setPosition({ 225, 372.5 });
+                window.draw(Head);
             }
             else
             {
-                Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
-                Tail.setPosition({ 240, 372.5 });
-                Tail.setString("Tail/");
+                Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                Head.setPosition({ 240, 372.5 });
+                Head.setString("Head/");
                 window.draw(Head);
                 window.draw(Tail);
             }

@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include"Buttons.h"
 
 class Circular {
 public:
@@ -15,10 +16,14 @@ public:
     void DeleteMiddle();
     void DeleteLast();
     void Update(std::string X, int Location);
-    void Search(std::string X);
+    int Search(std::string X);
     bool isFull();
     bool isEmpty();
-    void Print();
+    void Print(sf::RenderWindow& window, int Nprint);
+    void ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X, int Choosen);
+    void ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X);
+    void BeforeDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen);
+    void AfterDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen);
     int GetSize();
 private:
     struct Node {
@@ -43,5 +48,5 @@ void DeleteFirst(Circular& X);
 void DeleteLast(Circular& X);
 void DeleteMiddle(Circular& X);
 void Update(Circular& X, std::string Y, int Z);
-void Search(Circular& X, std::string Y);
+int Search(Circular& X, std::string Y);
 void CircularClient(sf::Event Events, sf::RenderWindow& window);

@@ -15,8 +15,11 @@ Circular::Circular()
 
 void Circular::Set(std::vector<std::string> X)
 {
+    head = nullptr;
+    tail = nullptr;
+    size = 0;
     for (int i = 0; i < X.size(); i++)
-        AddFirst(X[i]);
+        AddLast(X[i]);
 }
 
 void Circular::AddLast(std::string X) {
@@ -98,8 +101,8 @@ void Circular::DeleteFirst()
         return;
     }
     Node* toRemove = head;
-    tail->next = head->next;
     head = head->next;
+    tail->next = head;
     delete toRemove;
     size--;
 }
@@ -125,22 +128,25 @@ void Circular::DeleteMiddle()
 
 void Circular::DeleteLast()
 {
-    if (size == 1)
+    if (size == 1) 
     {
         Delete();
         return;
     }
     int Location = size - 2;
     Node* temp = head;
-    while (Location--)
+    while (Location--) 
     {
         temp = temp->next;
     }
     Node* toRemove = temp->next;
+    tail = temp;
     temp->next = toRemove->next;
     delete toRemove;
     size--;
+    tail->next = head;
 }
+
 
 void Circular::Update(std::string X, int Location)
 {
@@ -153,31 +159,361 @@ void Circular::Update(std::string X, int Location)
     return;
 }
 
-void Circular::Search(std::string X)
+int Circular::Search(std::string X)
 {
     Node* temp = head;
     int count = 0;
-    while (temp != nullptr)
-    {
-        if (temp->data == X)
-        {
-            std::cout << count << std::endl;
-            return;
-        }
+    do{
+        if (temp->data == X) return count;
         count++;
         temp = temp->next;
-    }
-    std::cout << -1 << std::endl;
+    } while (temp != head);
+    return -1;
 }
 
-void Circular::Print() {
+void Circular::Print(sf::RenderWindow& window, int Nprint)
+{
     if (head == nullptr) return;
-    Node* temp = head;
-    do {
-        std::cout << temp->data << " ";
-        temp = temp->next;
-    } while (temp != head);
-    std::cout << std::endl;
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Data;
+    Data.setFont(arial);
+    Data.setCharacterSize(15);
+    Data.sf::Text::setFillColor(TextColor);
+    Data.setStyle(sf::Text::Bold);
+
+    int i = 0;
+    Node* Temp = head;
+    do{
+        Data.setString(Temp->data);
+
+        if (i >= Nprint) Data.setPosition({ (float)390 + i * (150), 292.5 });
+        else Data.setPosition({ (float)240 + i * (150), 292.5 });
+
+        window.draw(Data);
+        i++;
+        Temp = Temp->next;
+    } while (Temp != head);
+}
+
+void Circular::ScreenAdd(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X, int Choosen)
+{
+    if (size == 0) return;
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color ScreenColor(238, 137, 128);
+    sf::Color TextColor(64, 140, 124);
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+
+    sf::Text Data;
+    Data.setFont(arial);
+    Data.setCharacterSize(15);
+    Data.sf::Text::setFillColor(TextColor);
+    Data.setStyle(sf::Text::Bold);
+    Data.setString(X);
+    Data.setPosition({ (float)240 + Choosen * 150, 112.5 });
+
+    sf::CircleShape Box(50.f);
+    Box.setFillColor(BoxColor);
+    Box.setFillColor(BoxColor);
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+    Box.setPosition({ (float)225 + Choosen * 150, 70 });
+
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
+    Tail.setString("Tail/");
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    window.clear(ScreenColor);
+
+    btnHome.drawto(window);
+    for (int i = 0; i < 10; i++)
+        btn[i].drawto(window);
+
+    LongArrow(0, size - 1, window);
+    PrintArrow(size - 1, window);
+    PrintBox(size, window);
+    Print(window, 8);
+    if (size == 1)
+    {
+        Head.setString("Head/Tail/");
+        Head.setPosition({ 225, 372.5 });
+        window.draw(Head);
+    }
+    else
+    {
+        Tail.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
+        Head.setPosition({ 240, 372.5 });
+        Head.setString("Head/");
+        window.draw(Head);
+        window.draw(Tail);
+    }
+
+    window.display();
+    sf::sleep(sf::seconds(1));
+
+    window.clear(ScreenColor);
+
+    btnHome.drawto(window);
+    for (int i = 0; i < 10; i++)
+        btn[i].drawto(window);
+
+    LongArrow(0, size - 1, window);
+    PrintArrow(size - 1, window);
+    PrintBox(size, window);
+    Print(window, 8);
+    if (size != 1) window.draw(Tail);
+    window.draw(Head);
+    window.draw(Box);
+    window.draw(Data);
+
+    window.display();
+    sf::sleep(sf::seconds(1));
+
+    window.clear(ScreenColor);
+
+    btnHome.drawto(window);
+    for (int i = 0; i < 10; i++)
+        btn[i].drawto(window);
+    LongArrow(0, size - 1, window);
+    PrintArrow(size - 1, Choosen - 1, 8, window);
+    PrintBox(size, window);
+    Print(window, 8);
+    ArrowPointAt(Choosen, window);
+    if (Choosen != 0) ArrowPoint(Choosen, window);
+    if (size > 1) window.draw(Tail);
+    window.draw(Head);
+    window.draw(Box);
+    window.draw(Data);
+
+    window.display();
+    sf::sleep(sf::seconds(1));
+}
+
+void Circular::ScreenAddForLast(sf::RenderWindow& window, Button btn[], Button btnHome, std::string X)
+{
+    if (size == 0) return;
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color ScreenColor(238, 137, 128);
+    sf::Color TextColor(64, 140, 124);
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+
+    sf::Text Data;
+    Data.setFont(arial);
+    Data.setCharacterSize(15);
+    Data.sf::Text::setFillColor(TextColor);
+    Data.setStyle(sf::Text::Bold);
+    Data.setString(X);
+    Data.setPosition({ (float)90 + size * 150, 112.5 });
+
+    sf::CircleShape Box(50.f);
+    Box.setFillColor(BoxColor);
+    Box.setFillColor(BoxColor);
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+    Box.setPosition({ (float)75 + size * 150, 70 });
+
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
+    Tail.setString("Tail/");
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    window.clear(ScreenColor);
+
+    btnHome.drawto(window);
+    for (int i = 0; i < 10; i++)
+        btn[i].drawto(window);
+    LongArrow(0, size - 1, window);
+    PrintArrow(size - 1, window);
+    PrintBox(size, window);
+    Print(window, 8);
+    if (size == 1)
+    {
+        Head.setString("Head/Tail/");
+        Head.setPosition({ 225, 372.5 });
+        window.draw(Head);
+    }
+    else
+    {
+        Tail.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
+        Head.setPosition({ 240, 372.5 });
+        Head.setString("Head/");
+        window.draw(Head);
+        window.draw(Tail);
+    }
+
+    window.display();
+    sf::sleep(sf::seconds(1));
+
+    window.clear(ScreenColor);
+
+    btnHome.drawto(window);
+    for (int i = 0; i < 10; i++)
+        btn[i].drawto(window);
+    LongArrow(0, size - 1, window);
+    PrintArrow(size - 1, window);
+    PrintBox(size, window);
+    Print(window, 8);
+    if (size != 1) window.draw(Tail);
+    window.draw(Head);
+    window.draw(Box);
+    window.draw(Data);
+
+    window.display();
+    sf::sleep(sf::seconds(1));
+
+    window.clear(ScreenColor);
+
+    btnHome.drawto(window);
+    for (int i = 0; i < 10; i++)
+        btn[i].drawto(window);
+    LongArrow(0, size - 1, window);
+    PrintArrow(size - 1, size - 1, 8, window);
+    PrintBox(size, window);
+    Print(window, 8);
+    ArrowPointUpAt(size - 1, window);
+    if (size > 1) window.draw(Tail);
+    window.draw(Head);
+    window.draw(Box);
+    window.draw(Data);
+
+    window.display();
+    sf::sleep(sf::seconds(1));
+}
+
+void Circular::BeforeDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen)
+{
+    if (size == 1) return;
+
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    LongArrow(0, size - 1, window);
+    PrintBox(size, window);
+    PrintArrow(size - 1, Choosen, Choosen - 1, window);
+    Print(window, 8);
+
+    btnHome.drawto(window);
+    for (int i = 0; i < 10; i++)
+        btn[i].drawto(window);
+
+    if (size == 1)
+    {
+        Head.setString("Head/Tail/");
+        Head.setPosition({ 225, 372.5 });
+        window.draw(Head);
+    }
+    else
+    {
+        sf::Text Tail;
+        Tail.setFont(arial);
+        Tail.setCharacterSize(20);
+        Tail.setString("Tail/");
+        Tail.sf::Text::setFillColor(sf::Color::Cyan);
+        Tail.setStyle(sf::Text::Bold);
+        Tail.setPosition({ (float)240 + (size - 1) * 150, 372.5 });
+
+        Head.setPosition({ 240, 372.5 });
+        Head.setString("Head/");
+        window.draw(Head);
+        window.draw(Tail);
+    }
+
+    window.display();
+    sf::sleep(sf::seconds(1));
+}
+
+void Circular::AfterDelete(sf::RenderWindow& window, Button btn[], Button btnHome, int Choosen)
+{
+    if (size == 0) return;
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    if (size == 1)
+    {
+        btnHome.drawto(window);
+
+        Head.setString("Head/Tail/");
+        Head.setPosition({ (float)375 - Choosen * 150, 372.5 });
+        window.draw(Head);
+
+        PrintBox(2, Choosen, window);
+        Print(window, Choosen);
+
+        for (int j = 0; j < 10; j++)
+            btn[j].drawto(window);
+
+        window.display();
+        sf::sleep(sf::seconds(1));
+        return;
+    }
+
+    if (Choosen == 0) LongArrow(1, size - 1, window);
+    else LongArrow(0, size, window);
+    PrintBox(size + 1, Choosen, window);
+    if (0 < Choosen) PrintArrow(size, Choosen, Choosen - 1, window);
+    else PrintArrow(size, Choosen, 8, window);
+    Print(window, Choosen);
+
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
+    Tail.setString("Tail/");
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
+    Tail.setPosition({ (float)240 + size * 150, 372.5 });
+    Head.setPosition({ (float)240 + (Choosen == 0) * 150, 372.5 });
+    Head.setString("Head/");
+    window.draw(Head);
+    window.draw(Tail);
+
+    btnHome.drawto(window);
+    for (int j = 0; j < 10; j++)
+        btn[j].drawto(window);
+
+    window.display();
+    sf::sleep(sf::seconds(1));
 }
 
 bool Circular::isFull()
@@ -234,9 +570,9 @@ void Update(Circular& X, std::string Y, int Z)
 {
     X.Update(Y, Z);
 }
-void Search(Circular& X, std::string Y)
+int Search(Circular& X, std::string Y)
 {
-    X.Search(Y);
+    return X.Search(Y);
 }
 
 void CircularClient(sf::Event Events, sf::RenderWindow& window)
@@ -283,6 +619,28 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
     Warnings2.setPosition({ 500, 50 });
     Warnings2.setStyle(sf::Text::Bold);
 
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
+    Tail.setString("Tail/");
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setPosition({ 240, 372.5 });
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    sf::Text Answer;
+    Answer.setFont(arial);
+    Answer.setCharacterSize(20);
+    Answer.setString("");
+    Answer.sf::Text::setFillColor(sf::Color::Cyan);
+    Answer.setPosition({ 500, 50 });
+    Answer.setStyle(sf::Text::Bold);
+
     Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
     btnHome.setPos({ 1200, 0 });
     btnHome.setFont(arial);
@@ -328,6 +686,7 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 10, 3, Done);
                         if (Done != 0) break;
+                        Example.ScreenAdd(window, btn, btnHome, X, 0);
                         AddFirst(Example, X);
                     }
                     break;
@@ -344,6 +703,7 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 4;
                         std::string X = GetData(Events, window, btn, 10, 4, Done);
                         if (Done != 0) break;
+                        Example.ScreenAddForLast(window, btn, btnHome, X);
                         AddLast(Example, X);
                     }
                     break;
@@ -360,6 +720,7 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 10, 5, Done);
                         if (Done != 0) break;
+                        Example.ScreenAdd(window, btn, btnHome, X, Example.GetSize() / 2);
                         AddMiddle(Example, X);
                     }
                     break;
@@ -372,9 +733,13 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
-                        Type = 0;
-                        DeleteFirst(Example);
                         Done = 0;
+                        Type = 0;
+                        window.clear(ScreenColor);
+                        Example.BeforeDelete(window, btn, btnHome, 0);
+                        DeleteFirst(Example);
+                        window.clear(ScreenColor);
+                        Example.AfterDelete(window, btn, btnHome, 0);
                     }
                     break;
 
@@ -386,9 +751,11 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
-                        Type = 0;
-                        DeleteLast(Example);
                         Done = 0;
+                        Type = 0;
+                        window.clear(ScreenColor);
+                        Example.BeforeDelete(window, btn, btnHome, Example.GetSize() - 1);
+                        DeleteLast(Example);
                     }
                     break;
 
@@ -400,9 +767,13 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
-                        Type = 0;
-                        DeleteMiddle(Example);
                         Done = 0;
+                        Type = 0;
+                        window.clear(ScreenColor);
+                        Example.BeforeDelete(window, btn, btnHome, Example.GetSize() / 2);
+                        DeleteMiddle(Example);
+                        window.clear(ScreenColor);
+                        Example.AfterDelete(window, btn, btnHome, (Example.GetSize() + 1) / 2);
                     }
                     break;
 
@@ -421,6 +792,41 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 9;
                         int Y = GetLocation(Events, window, btn, 10, 9, Example.GetSize() - 1, Done);
                         if (Done != 0) break;
+                        for (int i = 0; i <= Y; i++)
+                        {
+                            window.clear(ScreenColor);
+
+                            btnHome.drawto(window);
+
+                            LongArrow(0, Example.GetSize() - 1, window);
+                            PrintBox(Example.GetSize(), window);
+                            PrintArrow(Example.GetSize() - 1, window);
+                            Example.Print(window, 8);
+
+                            if (Example.GetSize() > 0)
+                            {
+                                if (Example.GetSize() == 1)
+                                {
+                                    Head.setString("Head/Tail/");
+                                    Head.setPosition({ 225, 372.5 });
+                                    window.draw(Head);
+                                }
+                                else
+                                {
+                                    Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                    Head.setPosition({ 240, 372.5 });
+                                    Head.setString("Head/");
+                                    window.draw(Head);
+                                    window.draw(Tail);
+                                }
+                            }
+
+                            for (int j = 0; j < 10; j++)
+                                btn[j].drawto(window);
+                            ArrowPointAt(i, window);
+                            window.display();
+                            sf::sleep(sf::seconds(1));
+                        }
                         Update(Example, X, Y);
                     }
                     break;
@@ -437,7 +843,83 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 10, 10, Done);
                         if (Done != 0) break;
-                        Search(Example, X);
+                        int Y = Search(Example, X);
+                        if (Y == -1)
+                        {
+                            for (int i = 0; i < Example.GetSize(); i++)
+                            {
+                                window.clear(ScreenColor);
+
+                                btnHome.drawto(window);
+                                LongArrow(0, Example.GetSize() - 1, window);
+                                PrintBox(Example.GetSize(), window);
+                                PrintArrow(Example.GetSize() - 1, window);
+                                Example.Print(window, 8);
+
+                                if (Example.GetSize() > 0)
+                                {
+                                    if (Example.GetSize() == 1)
+                                    {
+                                        Head.setString("Head/Tail/");
+                                        Head.setPosition({ 225, 372.5 });
+                                        window.draw(Head);
+                                    }
+                                    else
+                                    {
+                                        Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                        Head.setPosition({ 240, 372.5 });
+                                        Head.setString("Head/");
+                                        window.draw(Head);
+                                        window.draw(Tail);
+                                    }
+                                }
+
+                                for (int j = 0; j < 10; j++)
+                                    btn[j].drawto(window);
+                                ArrowPointAt(i, window);
+                                window.display();
+                                sf::sleep(sf::seconds(1));
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i <= Y; i++)
+                            {
+                                window.clear(ScreenColor);
+
+                                btnHome.drawto(window);
+                                LongArrow(0, Example.GetSize() - 1, window);
+                                PrintBox(Example.GetSize(), window);
+                                PrintArrow(Example.GetSize() - 1, window);
+                                Example.Print(window, 8);
+
+                                if (Example.GetSize() > 0)
+                                {
+                                    if (Example.GetSize() == 1)
+                                    {
+                                        Head.setString("Head/Tail/");
+                                        Head.setPosition({ 225, 372.5 });
+                                        window.draw(Head);
+                                    }
+                                    else
+                                    {
+                                        Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                        Head.setPosition({ 240, 372.5 });
+                                        Head.setString("Head/");
+                                        window.draw(Head);
+                                        window.draw(Tail);
+                                    }
+                                }
+
+                                for (int j = 0; j < 10; j++)
+                                    btn[j].drawto(window);
+                                ArrowPointAt(i, window);
+                                window.display();
+                                sf::sleep(sf::seconds(1));
+                            }
+                        }
+                        if (Y == -1) Answer.setString("Can't find " + X);
+                        else Answer.setString(X + " at " + std::to_string(Y));
                     }
                     break;
 
@@ -463,6 +945,7 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
                         for (int i = 0; i < 10; i++)
                             if (btn[i].isMouseOver(window))
                             {
+                                Answer.setString("");
                                 Done = i + 1;
                                 break;
                             }
@@ -486,18 +969,38 @@ void CircularClient(sf::Event Events, sf::RenderWindow& window)
 
         window.clear(ScreenColor);
 
-        LongArrow(Example.GetSize() - 1, window);
         btnHome.drawto(window);
-        PrintArrow(Example.GetSize(), window);
-        Example.Print();
+
+        LongArrow(0, Example.GetSize() - 1, window);
+        PrintBox(Example.GetSize(), window);
+        PrintArrow(Example.GetSize() - 1, window);
+        Example.Print(window, 8);
+
+        if (Example.GetSize() > 0)
+        {
+            if (Example.GetSize() == 1)
+            {
+                Head.setString("Head/Tail/");
+                Head.setPosition({ 225, 372.5 });
+                window.draw(Head);
+            }
+            else
+            {
+                Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                Head.setPosition({ 240, 372.5 });
+                Head.setString("Head/");
+                window.draw(Head);
+                window.draw(Tail);
+            }
+        }
 
         for (int i = 0; i < 10; i++)
             btn[i].drawto(window);
 
+        window.draw(Answer);
         if (Type == 1) window.draw(Warnings1);
         else if (Type == 2) window.draw(Warnings2);
 
         window.display();
-
     }
 }

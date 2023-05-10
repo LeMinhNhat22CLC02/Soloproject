@@ -183,13 +183,6 @@ void PrintBox(int Num, sf::RenderWindow& window)
     sf::Color OutColor(241, 70, 102);
     sf::Color BoxColor(255, 220, 195);
 
-    sf::VertexArray triangle(sf::Triangles, 3);
-    triangle[0].position = sf::Vector2f((float)229 + Num * 150, 220);
-    triangle[1].position = sf::Vector2f((float)229 + Num * 150, 220);
-    triangle[2].position = sf::Vector2f((float)211 + Num * 150, 240);
-    triangle[0].color = sf::Color::White;
-    triangle[1].color = sf::Color::White;
-    triangle[2].color = sf::Color::White;
     sf::CircleShape Box(50.f);
     Box.setFillColor(BoxColor);
     Box.setFillColor(BoxColor);
@@ -222,20 +215,21 @@ void PrintBox(int Num, int Except, sf::RenderWindow& window)
     }
 }
 
-void LongArrow(int Num, sf::RenderWindow& window)
+void LongArrow(int Begin, int Num, sf::RenderWindow& window)
 {
+    if (Num < 1) return;
     sf::VertexArray triangle(sf::Triangles, 3);
-    triangle[0].position = sf::Vector2f((float)255 + Num * 150, 200);
-    triangle[1].position = sf::Vector2f((float)295 + Num * 150, 200);
-    triangle[2].position = sf::Vector2f((float)275 + Num * 150, 180);
+    triangle[0].position = sf::Vector2f((float)350 + Begin * 150, 405);
+    triangle[1].position = sf::Vector2f((float)350 + Begin * 150, 365);
+    triangle[2].position = sf::Vector2f((float)330 + Begin * 150, 385);
     triangle[0].color = sf::Color::White;
     triangle[1].color = sf::Color::White;
     triangle[2].color = sf::Color::White;
 
     sf::Vertex line[] =
     {
-        sf::Vertex(sf::Vector2f((float)275 + Num * 150, 200)),
-        sf::Vertex(sf::Vector2f((float)275 + Num * 150, 240))
+        sf::Vertex(sf::Vector2f(350 + Begin * 150, 385)),
+        sf::Vertex(sf::Vector2f((float)220 + (Num + Begin) * 150, 385))
     };
     line[0].color = sf::Color::White;
     line[1].color = sf::Color::White;

@@ -11,4 +11,4 @@ void ArrowPointUpAt(int Num, sf::RenderWindow& window);
 void ArrowPoint(int Num, sf::RenderWindow& window);
 void PrintBox(int Num, sf::RenderWindow& window);
 void PrintBox(int Num, int Except, sf::RenderWindow& window);
-void LongArrow(int Num, sf::RenderWindow& window);
+void LongArrow(int Begin, int Num, sf::RenderWindow& window);
