@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include"Buttons.h"
 
 class Queue {
 public:
@@ -29,4 +30,5 @@ private:
 void Set(Queue& X, std::vector<std::string> Y);
 void Add(Queue& X, std::string Y);
 void Remove(Queue& X);
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, Queue& Example);
 void QueueClient(sf::Event Events, sf::RenderWindow& window);

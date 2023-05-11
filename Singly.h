@@ -44,4 +44,6 @@ void DeleteLast(Singly& X);
 void DeleteMiddle(Singly& X);
 void Update(Singly& X, std::string Y, int Z);
 int Search(Singly& X, std::string Y);
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, Singly& Example);
+int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int Datasize, int& Done, Singly& Example);
 void SinglyClient(sf::Event Events, sf::RenderWindow& window);

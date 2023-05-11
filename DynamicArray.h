@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include"Buttons.h"
 
 class Dynamic {
 public:
@@ -24,6 +25,8 @@ public:
     void resize(int newSize);
     int getCap();
     int Search(std::string X);
+    void PrintAdd(int Num, Button btn[], Button btnHome, sf::RenderWindow& window);
+    void PrintDelete(int Num, Button btn[], Button btnHome, sf::RenderWindow& window);
 private:
     int size;
     int capacity;
@@ -39,4 +42,7 @@ void DeleteMiddle(Dynamic &X);
 void DeleteLast(Dynamic &X);
 void Update(Dynamic& X, std::string Y, int Z);
 int Search(Dynamic& X, std::string Y);
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, Dynamic Example);
+int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int Datasize, int& Done, Dynamic Example);
+int GetSize(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int Datasize, int& Done, Dynamic Example);
 void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window);

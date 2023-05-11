@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include"Buttons.h"
 
 class Stack {
 public:
@@ -21,4 +22,5 @@ private:
 void Set(Stack& X, std::vector<std::string> Y);
 void Push(Stack& X, std::string Y, sf::RenderWindow& window);
 void Pop(Stack& X, sf::RenderWindow& window);
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, Stack& Example);
 void StackClient(sf::Event Events, sf::RenderWindow& window);

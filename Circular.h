@@ -49,4 +49,6 @@ void DeleteLast(Circular& X);
 void DeleteMiddle(Circular& X);
 void Update(Circular& X, std::string Y, int Z);
 int Search(Circular& X, std::string Y);
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, Circular& Example);
+int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int Datasize, int& Done, Circular& Example);
 void CircularClient(sf::Event Events, sf::RenderWindow& window);

@@ -6,6 +6,8 @@
 #include"InputData.h"
 #include"Objects.h"
 
+#define ENTER_KEY 13
+
 Stack::Stack() {
     Size = 7;
 }
@@ -67,6 +69,7 @@ int Stack::GetSize()
     return (int)data.size();
 }
 
+
 void Set(Stack& X, std::vector<std::string> Y)
 {
     X.Set(Y);
@@ -80,6 +83,141 @@ void Push(Stack& X, std::string Y, sf::RenderWindow& window)
 void Pop(Stack& X, sf::RenderWindow& window)
 {
     X.Pop(window);
+}
+
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, Stack& Example)
+{
+    X--;
+
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color ScreenColor(238, 137, 128);
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Note1;
+    Note1.setFont(arial);
+    Note1.setCharacterSize(20);
+    Note1.setString("Input your data then press enter key!");
+    Note1.sf::Text::setFillColor(sf::Color::Cyan);
+    Note1.setPosition({ 500, 50 });
+    Note1.setStyle(sf::Text::Bold);
+
+    Textbox Textbox1(15, TextColor, true);
+    Textbox1.setFont(arial);
+    Textbox1.setLimit(false);
+    Textbox1.setPosition(btn[X].getPosition());
+
+    sf::RectangleShape Box;
+    Box.setSize({ 160, 40 });
+    Box.setFillColor(BoxColor);
+    Box.setPosition(btn[X].getPosition());
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+
+    sf::Text Head;
+    Head.setFont(arial);
+    Head.setCharacterSize(20);
+    Head.setString("Head/");
+    Head.sf::Text::setFillColor(sf::Color::Cyan);
+    Head.setStyle(sf::Text::Bold);
+
+    sf::Text Tail;
+    Tail.setFont(arial);
+    Tail.setCharacterSize(20);
+    Tail.setPosition({ 240, 372.5 });
+    Tail.sf::Text::setFillColor(sf::Color::Cyan);
+    Tail.setStyle(sf::Text::Bold);
+
+    Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    btnHome.setPos({ 1200, 0 });
+    btnHome.setFont(arial);
+
+    while (window.isOpen())
+    {
+        while (window.pollEvent(Events))
+        {
+            switch (Events.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::MouseButtonPressed:
+                if (btnHome.isMouseOver(window))
+                {
+                    Done = -1;
+                    return "";
+                }
+                else
+                {
+                    for (int i = 0; i < Nbtn; i++)
+                        if (btn[i].isMouseOver(window))
+                        {
+                            Done = i + 1;
+                            return "";
+                        }
+                }
+                break;
+
+            case sf::Event::TextEntered:
+                Done = 0;
+                if (Events.text.unicode == ENTER_KEY) return Textbox1.getText();
+                Textbox1.typeOn(Events);
+                break;
+            }
+        }
+
+        if (btnHome.isMouseOver(window))
+        {
+            btnHome.setBackColor(sf::Color::White);
+        }
+        else
+        {
+            btnHome.setBackColor(sf::Color::Cyan);
+            for (int i = 0; i < Nbtn; i++)
+                if (btn[i].isMouseOver(window))
+                    btn[i].setBackColor(sf::Color::White);
+                else btn[i].setBackColor(BoxColor);
+        }
+
+        window.clear(ScreenColor);
+
+        for (int i = 0; i < Nbtn; i++)
+            btn[i].drawto(window);
+        btnHome.drawto(window);
+        window.draw(Box);
+        Textbox1.drawto(window);
+        window.draw(Note1);
+
+        PrintBox(Example.GetSize(), window);
+        PrintArrow(Example.GetSize() - 1, window);
+        Example.Print(window);
+
+        if (Example.GetSize() > 0)
+        {
+            if (Example.GetSize() == 1)
+            {
+                Tail.setString("Tail/Head/");
+                Tail.setPosition({ 225, 372.5 });
+                window.draw(Tail);
+            }
+            else
+            {
+                Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                Tail.setPosition({ 240, 372.5 });
+                Tail.setString("Tail/");
+                window.draw(Head);
+                window.draw(Tail);
+            }
+        }
+
+        window.display();
+    }
+    Done = 0;
+    return "";
 }
 
 void StackClient(sf::Event Events, sf::RenderWindow& window)
@@ -178,7 +316,7 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
                     {
                         Type = 0;
                         Done = 3;
-                        std::string X = GetData(Events, window, btn, 5, 3, Done);
+                        std::string X = GetData(Events, window, btn, 5, 3, Done, Example);
                         if (Done != 0) break;
                         window.clear(ScreenColor);
                         Push(Example, X, window);

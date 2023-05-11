@@ -47,4 +47,6 @@ void DeleteLast(Doubly& X);
 void DeleteMiddle(Doubly& X);
 void Update(Doubly& X, std::string Y, int Z);
 int Search(Doubly& X, std::string Y);
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, Doubly& Example);
+int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int Datasize, int& Done, Doubly& Example);
 void DoublyClient(sf::Event Events, sf::RenderWindow& window);

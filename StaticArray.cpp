@@ -6,6 +6,8 @@
 #include"InputData.h"
 #include"Objects.h"
 
+#define ENTER_KEY 13
+
 void Set(std::string X[], std::vector<std::string> Y, int& n)
 {
     for (int i = 0; i < Y.size(); i++)
@@ -88,6 +90,235 @@ void Print(sf::RenderWindow& window, std::string data[], int size, int Nprint)
 
         window.draw(Data);
     }
+}
+
+std::string GetData(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int& Done, std::string Example[], int n)
+{
+    X--;
+
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color ScreenColor(238, 137, 128);
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Note1;
+    Note1.setFont(arial);
+    Note1.setCharacterSize(20);
+    Note1.setString("Input your data then press enter key!");
+    Note1.sf::Text::setFillColor(sf::Color::Cyan);
+    Note1.setPosition({ 500, 50 });
+    Note1.setStyle(sf::Text::Bold);
+
+    Textbox Textbox1(15, TextColor, true);
+    Textbox1.setFont(arial);
+    Textbox1.setLimit(false);
+    Textbox1.setPosition(btn[X].getPosition());
+
+    sf::RectangleShape Box;
+    Box.setSize({ 160, 40 });
+    Box.setFillColor(BoxColor);
+    Box.setPosition(btn[X].getPosition());
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+
+    Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    btnHome.setPos({ 1200, 0 });
+    btnHome.setFont(arial);
+
+    while (window.isOpen())
+    {
+        while (window.pollEvent(Events))
+        {
+            switch (Events.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::MouseButtonPressed:
+                if (btnHome.isMouseOver(window))
+                {
+                    Done = -1;
+                    return "";
+                }
+                else
+                {
+                    for (int i = 0; i < Nbtn; i++)
+                        if (btn[i].isMouseOver(window))
+                        {
+                            Done = i + 1;
+                            return "";
+                        }
+                }
+                break;
+
+            case sf::Event::TextEntered:
+                Done = 0;
+                if (Events.text.unicode == ENTER_KEY) return Textbox1.getText();
+                Textbox1.typeOn(Events);
+                break;
+            }
+        }
+
+        if (btnHome.isMouseOver(window))
+        {
+            btnHome.setBackColor(sf::Color::White);
+        }
+        else
+        {
+            btnHome.setBackColor(sf::Color::Cyan);
+            for (int i = 0; i < Nbtn; i++)
+                if (btn[i].isMouseOver(window))
+                    btn[i].setBackColor(sf::Color::White);
+                else btn[i].setBackColor(BoxColor);
+        }
+
+        window.clear(ScreenColor);
+
+        for (int i = 0; i < Nbtn; i++)
+            btn[i].drawto(window);
+        btnHome.drawto(window);
+        window.draw(Box);
+        Textbox1.drawto(window);
+        window.draw(Note1);
+
+        PrintBox(7, window);
+        Print(window, Example, n, 8);
+
+        window.display();
+    }
+    Done = 0;
+    return "";
+}
+
+int GetLocation(sf::Event Events, sf::RenderWindow& window, Button btn[], int Nbtn, int X, int Datasize, int& Done, std::string Example[], int n)
+{
+    X--;
+
+    sf::Font arial;
+    arial.loadFromFile("arial.ttf");
+
+    sf::Color ScreenColor(238, 137, 128);
+    sf::Color OutColor(241, 70, 102);
+    sf::Color BoxColor(255, 220, 195);
+    sf::Color TextColor(64, 140, 124);
+
+    sf::Text Note1;
+    Note1.setFont(arial);
+    Note1.setCharacterSize(20);
+    Note1.setString("Input the location then press enter key!");
+    Note1.sf::Text::setFillColor(sf::Color::Cyan);
+    Note1.setPosition({ 500, 50 });
+    Note1.setStyle(sf::Text::Bold);
+
+    sf::Text Warnings1;
+    Warnings1.setFont(arial);
+    Warnings1.setCharacterSize(20);
+    Warnings1.setString("Location exceed size. Please re-enter!");
+    Warnings1.sf::Text::setFillColor(sf::Color::Cyan);
+    Warnings1.setPosition({ 500, 50 });
+    Warnings1.setStyle(sf::Text::Bold);
+
+    sf::Text Warnings2;
+    Warnings2.setFont(arial);
+    Warnings2.setCharacterSize(20);
+    Warnings2.setString("The location must be a positive number. Please re - enter!");
+    Warnings2.sf::Text::setFillColor(sf::Color::Cyan);
+    Warnings2.setPosition({ 500, 50 });
+    Warnings2.setStyle(sf::Text::Bold);
+
+    Textbox Textbox1(15, TextColor, true);
+    Textbox1.setFont(arial);
+    Textbox1.setLimit(false);
+    Textbox1.setPosition(btn[X].getPosition());
+
+    sf::RectangleShape Box;
+    Box.setSize({ 160, 40 });
+    Box.setFillColor(BoxColor);
+    Box.setOutlineThickness(3);
+    Box.setOutlineColor(OutColor);
+    Box.setPosition(btn[X].getPosition());
+
+    Button btnHome("Home", { 100, 50 }, 15, sf::Color::Cyan, TextColor, OutColor, 5);
+    btnHome.setPos({ 1200, 0 });
+    btnHome.setFont(arial);
+
+    int Type = 0;
+
+    while (window.isOpen())
+    {
+        while (window.pollEvent(Events))
+        {
+            switch (Events.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::MouseButtonPressed:
+                if (btnHome.isMouseOver(window))
+                {
+                    Done = -1;
+                    return 0;
+                }
+                else
+                {
+                    for (int i = 0; i < Nbtn; i++)
+                        if (btn[i].isMouseOver(window))
+                        {
+                            Done = i + 1;
+                            return 0;
+                        }
+                }
+                break;
+
+            case sf::Event::TextEntered:
+                if (Events.text.unicode == ENTER_KEY)
+                {
+                    Done = 0;
+                    Type = WhatType(Textbox1.getText(), Datasize);
+                    if (Type == 0) return std::stoi(Textbox1.getText());
+                    Textbox1.Clear();
+                }
+                Textbox1.typeOn(Events);
+                break;
+            }
+        }
+
+        if (btnHome.isMouseOver(window))
+        {
+            btnHome.setBackColor(sf::Color::White);
+        }
+        else
+        {
+            btnHome.setBackColor(sf::Color::Cyan);
+            for (int i = 0; i < Nbtn; i++)
+                if (btn[i].isMouseOver(window))
+                    btn[i].setBackColor(sf::Color::White);
+                else btn[i].setBackColor(BoxColor);
+        }
+
+        window.clear(ScreenColor);
+
+        for (int i = 0; i < Nbtn; i++)
+            btn[i].drawto(window);
+        btnHome.drawto(window);
+        window.draw(Box);
+        Textbox1.drawto(window);
+        if (Type == 0) window.draw(Note1);
+        else if (Type == 1) window.draw(Warnings1);
+        else window.draw(Warnings2);
+
+        PrintBox(7, window);
+        Print(window, Example, n, 8);
+
+        window.display();
+    }
+    Done = 0;
+    return 0;
 }
 
 void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
@@ -186,7 +417,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     {
                         Type = 0;
                         Done = 3;
-                        std::string X = GetData(Events, window, btn, 11, 3, Done);
+                        std::string X = GetData(Events, window, btn, 11, 3, Done, Example, n);
                         if (Done != 0) break;
                         window.clear(ScreenColor);
                         btnHome.drawto(window);
@@ -222,7 +453,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     {
                         Type = 0;
                         Done = 4;
-                        std::string X = GetData(Events, window, btn, 11, 4, Done);
+                        std::string X = GetData(Events, window, btn, 11, 4, Done, Example, n);
                         if (Done != 0) break;
                         AddLast(Example, X, n);
                     }
@@ -238,7 +469,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     {
                         Type = 0;
                         Done = 5;
-                        std::string X = GetData(Events, window, btn, 11, 5, Done);
+                        std::string X = GetData(Events, window, btn, 11, 5, Done, Example, n);
                         if (Done != 0) break;
                         window.clear(ScreenColor);
                         btnHome.drawto(window);
@@ -354,10 +585,10 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     {
                         Type = 0;
                         Done = 9;
-                        std::string X = GetData(Events, window, btn, 11, 9, Done);
+                        std::string X = GetData(Events, window, btn, 11, 9, Done, Example, n);
                         if (Done != 0) break;
                         Done = 9;
-                        int Y = GetLocation(Events, window, btn, 11, 9, n - 1, Done);
+                        int Y = GetLocation(Events, window, btn, 11, 9, n - 1, Done, Example, n);
                         if (Done != 0) break;
                         Update(Example, X, Y, n);
                     }
@@ -373,7 +604,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     {
                         Type = 0;
                         Done = 10;
-                        int Y = GetLocation(Events, window, btn, 11, 10, n - 1, Done);
+                        int Y = GetLocation(Events, window, btn, 11, 10, n - 1, Done, Example, n);
                         if (Done != 0) break;
                         Answer.setString("The value is " + Example[Y]);
                     }
@@ -389,7 +620,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     {
                         Type = 0;
                         Done = 5;
-                        std::string X = GetData(Events, window, btn, 11, 11, Done);
+                        std::string X = GetData(Events, window, btn, 11, 11, Done, Example, n);
                         if (Done != 0) break;
                         int Y = Search(Example, X, n);
                         if (Y == -1)
