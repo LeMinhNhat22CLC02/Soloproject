@@ -77,38 +77,16 @@ void Dynamic::Print(sf::RenderWindow& window, int Nprint)
     }
 }
 
-void Dynamic::AddFirst(std::string X, sf::RenderWindow& window)
+void Dynamic::AddFirst(std::string X)
 {   
-    PrintBox(capacity, window);
-    Print(window, 8);
-    window.display();
-    for (int i = size; i >= 1; i--)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(capacity, window);
-        Print(window, i - 1);
-        window.display();
-    }
-
     for (int i = size; i >= 1; i--)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
     data[0] = X;
     size++;
 }
 
-void Dynamic::AddMiddle(std::string X, sf::RenderWindow& window)
+void Dynamic::AddMiddle(std::string X)
 {
-    PrintBox(capacity, window);
-    Print(window, 8);
-    window.display();
-    for (int i = size; i >= size / 2; i--)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(capacity, window);
-        Print(window, i - 1);
-        window.display();
-    }
-
     for (int i = size; i >= size / 2; i--)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) - 1];
     data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(size / 2) - 1] = X;
@@ -121,42 +99,18 @@ void Dynamic::AddLast(std::string X)
     size++;
 }
 
-void Dynamic::DeleteFirst(sf::RenderWindow& window)
+void Dynamic::DeleteFirst()
 {
-    PrintBox(capacity, window);
-    Print(window, 8);
-    window.display();
-
     size--;
     for (int i = 0; i < size; i++)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
-
-    for (int i = 0; i < size; i++)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(capacity, window);
-        Print(window, i + 1);
-        window.display();
-    }
 }
 
-void Dynamic::DeleteMiddle(sf::RenderWindow& window)
+void Dynamic::DeleteMiddle()
 {
-    PrintBox(capacity, window);
-    Print(window, 8);
-    window.display();
-
     size--;
     for (int i = size / 2; i < size; i++)
         data[i] = data[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(i) + 1];
-
-    for (int i = size / 2; i < size; i++)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(capacity, window);
-        Print(window, i + 1);
-        window.display();
-    }
 }
 
 void Dynamic::DeleteLast()
@@ -196,14 +150,14 @@ void Set(Dynamic& X, std::vector<std::string> Y)
     X.Set(Y);
 }
 
-void AddFirst(Dynamic& X, std::string Y, sf::RenderWindow& window)
+void AddFirst(Dynamic& X, std::string Y)
 {
-    X.AddFirst(Y, window);
+    X.AddFirst(Y);
 }
 
-void AddMiddle(Dynamic& X, std::string Y, sf::RenderWindow& window)
+void AddMiddle(Dynamic& X, std::string Y)
 {
-    X.AddMiddle(Y, window);
+    X.AddMiddle(Y);
 }
 
 void AddLast(Dynamic& X, std::string Y)
@@ -211,14 +165,14 @@ void AddLast(Dynamic& X, std::string Y)
     X.AddLast(Y);
 }
 
-void DeleteFirst(Dynamic& X, sf::RenderWindow& window)
+void DeleteFirst(Dynamic& X)
 {
-    X.DeleteFirst(window);
+    X.DeleteFirst();
 }
 
-void DeleteMiddle(Dynamic& X, sf::RenderWindow& window)
+void DeleteMiddle(Dynamic& X)
 {
-    X.DeleteMiddle(window);
+    X.DeleteMiddle();
 }
 
 void DeleteLast(Dynamic& X)
@@ -350,7 +304,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 12, 3, Done);
                         if (Done != 0) break;
                         
-                        AddFirst(Example, X, window);
+                        AddFirst(Example, X);
                     }
                     break;
 
@@ -396,7 +350,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                         std::string X = GetData(Events, window, btn, 12, 5, Done);
                         if (Done != 0) break;
                         if (Example.isMax()) Example.resize(Example.GetSize() + 1);
-                        AddMiddle(Example, X, window);
+                        AddMiddle(Example, X);
                     }
                     break;
 
@@ -409,7 +363,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteFirst(Example, window);
+                        DeleteFirst(Example);
                         Done = 0;
                     }
                     break;
@@ -437,7 +391,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                     else
                     {
                         Type = 0;
-                        DeleteMiddle(Example, window);
+                        DeleteMiddle(Example);
                         Done = 0;
                     }
                     break;
@@ -510,7 +464,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                                 PrintBox(Example.getCap(), window);
                                 Example.Print(window, 8);
 
-                                for (int j = 0; j < 11; j++)
+                                for (int j = 0; j < 12; j++)
                                     btn[j].drawto(window);
                                 ArrowPointAt(i, window);
                                 window.display();
@@ -528,7 +482,7 @@ void DynamicArrayClient(sf::Event Events, sf::RenderWindow& window)
                                 PrintBox(Example.getCap(), window);
                                 Example.Print(window, 8);
 
-                                for (int j = 0; j < 11; j++)
+                                for (int j = 0; j < 12; j++)
                                     btn[j].drawto(window);
                                 ArrowPointAt(i, window);
                                 window.display();

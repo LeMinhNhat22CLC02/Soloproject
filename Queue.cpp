@@ -23,7 +23,7 @@ Queue::~Queue()
     }
 }
 
-void Queue::Add(std::string data, sf::RenderWindow& window)
+void Queue::Add(std::string data)
 {
     Node* temp = new Node;
     temp->data = data;
@@ -40,16 +40,10 @@ void Queue::Add(std::string data, sf::RenderWindow& window)
         back = temp;
     }
     Size++;
-    PrintArrow(Size - 2, window);
-    PrintBox(Size, window);
-    Print(window);
 }
 
-void Queue::Remove(sf::RenderWindow& window)
+void Queue::Remove()
 {
-    PrintArrow(Size - 2, window);
-    PrintBox(Size, window);
-    Print(window);
     std::string data = front->data;
     Node* temp = front;
     front = front->next;
@@ -94,20 +88,11 @@ void Queue::Print(sf::RenderWindow& window)
 }
 void Queue::Set(std::vector<std::string> X)
 {
-    Node* temp = new Node;
-    temp->data = X[0];
-    temp->next = nullptr;
-    front = temp;
-    back = temp;
-    for (int i = 1; i < X.size(); i++)
-    {
-        temp = new Node;
-        temp->data = X[i];
-        temp->next = nullptr;
-        back->next = temp;
-        back = temp;
-    }
-    Size = (int)X.size();
+    front = nullptr;
+    back = nullptr;
+    Size = 0;
+    for (int i = 0; i < X.size(); i++)
+        Add(X[i]);
 }
 
 int Queue::GetSize() 
@@ -120,14 +105,14 @@ void Set(Queue& X, std::vector<std::string> Y)
     X.Set(Y);
 }
 
-void Add(Queue& X, std::string Y, sf::RenderWindow& window)
+void Add(Queue& X, std::string Y)
 {
-    X.Add(Y, window);
+    X.Add(Y);
 }
 
-void Remove(Queue& X, sf::RenderWindow& window)
+void Remove(Queue& X)
 {
-    X.Remove(window);
+    X.Remove();
 }
 
 void QueueClient(sf::Event Events, sf::RenderWindow& window)
@@ -228,11 +213,28 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 5, 3, Done);
                         if (Done != 0) break;
-                        Add(Example, X, window);
-                        Head.setPosition({ (float)240 + std::max(0, Example.GetSize() - 2) * 150, 372.5 });
-                        Tail.setPosition({ 240, 372.5 });
-                        window.draw(Head);
-                        window.draw(Tail);
+                        Add(Example, X);
+                        window.clear(ScreenColor);
+                        PrintArrow(Example.GetSize() - 2, window);
+                        PrintBox(Example.GetSize(), window);
+                        Example.Print(window);
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 5; i++)
+                            btn[i].drawto(window);
+                        if (Example.GetSize() == 1)
+                        {
+                            Head.setString("Head/Tail/");
+                            Head.setPosition({ 225, 372.5 });
+                            window.draw(Head);
+                        }
+                        else
+                        {
+                            Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                            Head.setPosition({ 240, 372.5 });
+                            Head.setString("Head/");
+                            window.draw(Head);
+                            window.draw(Tail);
+                        }
                         window.display();
                         sf::sleep(sf::seconds(1));
                     }
@@ -249,17 +251,31 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
                         window.clear(ScreenColor);
                         if (Example.GetSize() > 0)
                         {
-                            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
-                            Tail.setPosition({ 240, 372.5 });
-                            window.draw(Head);
-                            window.draw(Tail);
+                            if (Example.GetSize() == 1)
+                            {
+                                Head.setString("Head/Tail/");
+                                Head.setPosition({ 225, 372.5 });
+                                window.draw(Head);
+                            }
+                            else
+                            {
+                                Tail.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                Head.setPosition({ 240, 372.5 });
+                                Head.setString("Head/");
+                                window.draw(Head);
+                                window.draw(Tail);
+                            }
                         }
+                        PrintArrow(Example.GetSize() - 1, 0, 8, window);
+                        PrintBox(Example.GetSize(), window);
+                        Example.Print(window);
                         btnHome.drawto(window);
                         for (int i = 0; i < 5; i++)
                             btn[i].drawto(window);
-                        Remove(Example, window);
+
                         window.display();
                         sf::sleep(sf::seconds(1));
+                        Remove(Example);
                         Type = 0;
                         Done = 0;
                     }
@@ -326,7 +342,7 @@ void QueueClient(sf::Event Events, sf::RenderWindow& window)
             {
                 Head.setString("Head/Tail/");
                 Head.setPosition({ 225, 372.5 });
-                window.draw(Tail);
+                window.draw(Head);
             }
             else
             {

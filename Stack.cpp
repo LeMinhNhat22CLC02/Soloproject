@@ -180,11 +180,25 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 5, 3, Done);
                         if (Done != 0) break;
+                        window.clear(ScreenColor);
                         Push(Example, X, window);
-                        Head.setPosition({ (float)240 + std::max(0, Example.GetSize() - 2) * 150, 372.5 });
-                        Tail.setPosition({ 240, 372.5 });
-                        window.draw(Head);
-                        window.draw(Tail);
+                        if (Example.GetSize() == 1)
+                        {
+                            Tail.setString("Tail/Head/");
+                            Tail.setPosition({ 225, 372.5 });
+                            window.draw(Tail);
+                        }
+                        else
+                        {
+                            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                            Tail.setPosition({ 240, 372.5 });
+                            Tail.setString("Tail/");
+                            window.draw(Head);
+                            window.draw(Tail);
+                        }
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 5; i++)
+                            btn[i].drawto(window);
                         window.display();
                         sf::sleep(sf::seconds(1));
                     }
@@ -201,10 +215,20 @@ void StackClient(sf::Event Events, sf::RenderWindow& window)
                         window.clear(ScreenColor);
                         if (Example.GetSize() > 0)
                         {
-                            Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
-                            Tail.setPosition({ 240, 372.5 });
-                            window.draw(Head);
-                            window.draw(Tail);
+                            if (Example.GetSize() == 1)
+                            {
+                                Tail.setString("Tail/Head/");
+                                Tail.setPosition({ 225, 372.5 });
+                                window.draw(Tail);
+                            }
+                            else
+                            {
+                                Head.setPosition({ (float)240 + (Example.GetSize() - 1) * 150, 372.5 });
+                                Tail.setPosition({ 240, 372.5 });
+                                Tail.setString("Tail/");
+                                window.draw(Head);
+                                window.draw(Tail);
+                            }
                         }
                         btnHome.drawto(window);
                         for (int i = 0; i < 5; i++)

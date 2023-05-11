@@ -13,89 +13,40 @@ void Set(std::string X[], std::vector<std::string> Y, int& n)
     n = (int)Y.size();
 }
 
-void AddFirst(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
+void AddFirst(std::string X[], std::string Y, int& n)
 {
-    PrintBox(7, window);
-    Print(window, X, n, 8);
-    window.display();
-    for (int i = n; i >= 1; i--)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(7, window);
-        Print(window, X, n, i - 1);
-        window.display();
-    }
-
     for (int i = n; i > 0; i--)
         X[i] = X[i - 1];
     X[0] = Y;
     n++;
 }
 
-void AddMiddle(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
+void AddMiddle(std::string X[], std::string Y, int& n)
 {
-    PrintBox(7, window);
-    Print(window, X, n, 8);
-    window.display();
-    for (int i = n; i >= n/2; i--)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(7, window);
-        Print(window, X, n, i - 1);
-        window.display();
-    }
-
     for (int i = n; i > n / 2; i--)
         X[i] = X[i - 1];
     X[n / 2] = Y;
     n++;
 }
 
-void AddLast(std::string X[], std::string Y, int& n, sf::RenderWindow& window)
+void AddLast(std::string X[], std::string Y, int& n)
 {
-    PrintBox(7, window);
-    Print(window, X, n, 8);
-    sf::sleep(sf::seconds(1));
     X[n] = Y;
     n++;
 }
 
-void DeleteFirst(std::string X[], int& n, sf::RenderWindow& window)
+void DeleteFirst(std::string X[], int& n)
 {
-    PrintBox(7, window);
-    Print(window, X, n, 8);
-    window.display();
-
     n--;
     for (int i = 0; i < n; i++)
         X[i] = X[i + 1];
-
-    for (int i = 0; i < n; i++)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(7, window);
-        Print(window, X, n, i + 1);
-        window.display();
-    }
 }
 
-void DeleteMiddle(std::string X[], int& n, sf::RenderWindow& window)
+void DeleteMiddle(std::string X[], int& n)
 {
-    PrintBox(7, window);
-    Print(window, X, n, 8);
-    window.display();
-
     n--;
     for (int i = n / 2; i < n; i++)
         X[i] = X[i + 1]; 
-
-    for (int i = n/2; i < n; i++)
-    {
-        sf::sleep(sf::seconds(1));
-        PrintBox(7, window);
-        Print(window, X, n, i + 1);
-        window.display();
-    }
 }
 
 void DeleteLast(std::string X[], int& n)
@@ -237,7 +188,27 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 3;
                         std::string X = GetData(Events, window, btn, 11, 3, Done);
                         if (Done != 0) break;
-                        AddFirst(Example, X, n, window);
+                        window.clear(ScreenColor);
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 11; i++)
+                            btn[i].drawto(window);
+                        PrintBox(7, window);
+                        Print(window, Example, n, 8);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
+                        for (int i = n; i >= 1; i--)
+                        {
+                            window.clear(ScreenColor);
+                            btnHome.drawto(window);
+                            for (int i = 0; i < 11; i++)
+                                btn[i].drawto(window);
+                            PrintBox(7, window);
+                            Print(window, Example, n, i - 1);
+                            window.display();
+                            sf::sleep(sf::seconds(1));
+                        }
+
+                        AddFirst(Example, X, n);
                     }
                     break;
 
@@ -253,7 +224,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 4;
                         std::string X = GetData(Events, window, btn, 11, 4, Done);
                         if (Done != 0) break;
-                        AddLast(Example, X, n, window);
+                        AddLast(Example, X, n);
                     }
                     break;
 
@@ -269,7 +240,26 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         Done = 5;
                         std::string X = GetData(Events, window, btn, 11, 5, Done);
                         if (Done != 0) break;
-                        AddMiddle(Example, X, n, window);
+                        window.clear(ScreenColor);
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 11; i++)
+                            btn[i].drawto(window);
+                        PrintBox(7, window);
+                        Print(window, Example, n, 8);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
+                        for (int i = n; i > n / 2; i--)
+                        {
+                            window.clear(ScreenColor);
+                            btnHome.drawto(window);
+                            for (int i = 0; i < 11; i++)
+                                btn[i].drawto(window);
+                            PrintBox(7, window);
+                            Print(window, Example, n, i - 1);
+                            window.display();
+                            sf::sleep(sf::seconds(1));
+                        }
+                        AddMiddle(Example, X, n);
                     }
                     break;
 
@@ -281,9 +271,28 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
+                        window.clear(ScreenColor);
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 11; i++)
+                            btn[i].drawto(window);
+                        PrintBox(7, window);
+                        Print(window, Example, n, 8);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
                         Type = 0;
-                        DeleteFirst(Example, n, window);
+                        DeleteFirst(Example, n);
                         Done = 0;
+                        for (int i = 0; i < n; i++)
+                        {
+                            window.clear(ScreenColor);
+                            btnHome.drawto(window);
+                            for (int i = 0; i < 11; i++)
+                                btn[i].drawto(window);
+                            PrintBox(7, window);
+                            Print(window, Example, n, i + 1);
+                            window.display();
+                            sf::sleep(sf::seconds(1));
+                        }
                     }
                     break;
 
@@ -309,9 +318,29 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                     }
                     else
                     {
+                        window.clear(ScreenColor);
+                        btnHome.drawto(window);
+                        for (int i = 0; i < 11; i++)
+                            btn[i].drawto(window);
+                        PrintBox(7, window);
+                        Print(window, Example, n, 8);
+                        window.display();
+                        sf::sleep(sf::seconds(1));
                         Type = 0;
-                        DeleteMiddle(Example, n, window);
+                        DeleteMiddle(Example, n);
                         Done = 0;
+
+                        for (int i = n / 2; i < n; i++)
+                        {
+                            window.clear(ScreenColor);
+                            btnHome.drawto(window);
+                            for (int i = 0; i < 11; i++)
+                                btn[i].drawto(window);
+                            PrintBox(7, window);
+                            Print(window, Example, n, i + 1);
+                            window.display();
+                            sf::sleep(sf::seconds(1));
+                        }
                     }
                     break;
 
@@ -426,6 +455,7 @@ void StaticArrayClient(sf::Event Events, sf::RenderWindow& window)
                         for (int i = 0; i < 11; i++)
                         if (btn[i].isMouseOver(window))
                         {
+                            Answer.setString("");
                             Done = i + 1;
                             break;
                         }

@@ -7,8 +7,8 @@ class Queue {
 public:
     Queue();
     ~Queue();
-    void Add(std::string data, sf::RenderWindow& window);
-    void Remove(sf::RenderWindow& window);
+    void Add(std::string data);
+    void Remove();
     bool isFull();
     bool isEmpty();
     void Print(sf::RenderWindow& window);
@@ -27,6 +27,6 @@ private:
 };
 
 void Set(Queue& X, std::vector<std::string> Y);
-void Add(Queue& X, std::string Y, sf::RenderWindow& window);
-void Remove(Queue& X, sf::RenderWindow& window);
+void Add(Queue& X, std::string Y);
+void Remove(Queue& X);
 void QueueClient(sf::Event Events, sf::RenderWindow& window);
