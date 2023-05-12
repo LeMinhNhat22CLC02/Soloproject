@@ -49,6 +49,7 @@ bool Dynamic::isEmpty()
 
 void Dynamic::Set(std::vector<std::string> X)
 {
+    if (X.size() > capacity) data.resize((int)X.size(), "");
     for (int i = 0; i < (int)X.size(); i++)
         data[i] = X[i];
     size = (int)X.size();
